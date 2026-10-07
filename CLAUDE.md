@@ -29,7 +29,9 @@ To verify changes, load `file:///C:/Users/deepa/financial2/index.html` in the bu
 The file runs in the same order in all three languages, with a banner comment (`/* ===== N. NAME ===== */` or `<!-- ===== -->`) at each major section. Keep that order and comment style when adding sections.
 
 - **CSS**: design tokens on `:root` (colors `--navy #0B2545`, `--gold #C9A227`, `--bg #F7F9FC`, spacing `--space-1..8`, `--nav-height`). Use tokens, not literal colors. The CSS is mobile-first: base styles first, then `@media (min-width: 768px)` and `@media (min-width: 1024px)` blocks near the end of the stylesheet. Put responsive overrides in those blocks rather than next to the base rules.
-- **JS**: one IIFE with numbered sections: nav toggle, scroll effects (header shadow and back-to-top after 400px), fade-in observer, stat counters, carousel, enquiry form, newsletter, footer year.
+- **JS**: one IIFE with numbered sections: nav toggle, scroll effects (header shadow and back-to-top after 400px), fade-in observer, stat counters, carousel, enquiry form, newsletter, footer year, workshop popup, chatbot widget.
+- **Chatbot widget:** a fixed bottom-left button (z-index above the sticky header). Clicking it opens a panel with a "Chat on WhatsApp" link (`wa.me/6512345678`, a placeholder) and says "How can I help you?" aloud through the browser's `speechSynthesis`.
+- **Workshop popup:** a native `<dialog>` that opens 10s after page load. It collects name and email and logs them like the enquiry form. It doesn't show again once dismissed or registered (`localStorage` key `hwp-workshop-<date>`), and it stops appearing after `WORKSHOP_ENDS`. For a new event, update the dialog copy, `WORKSHOP_ENDS` and `WORKSHOP_KEY` together.
 
 ## Cross-cutting conventions
 

@@ -30,6 +30,8 @@
       --border: #D5DCE6;
       --error: #D93025;
       --success: #1E8E3E;
+      --whatsapp: #128C7E;
+      --whatsapp-dark: #075E54;
 
       /* Typography */
       --font-heading: "Playfair Display", Georgia, "Times New Roman", serif;
@@ -810,7 +812,220 @@
     .back-to-top:hover { background: var(--gold-light); transform: translateY(-3px); }
 
     /* =========================================================
-       10. RESPONSIVE: TABLET (min-width: 768px)
+       10. WORKSHOP POPUP
+       ========================================================= */
+    .workshop-modal {
+      width: calc(100% - 2 * var(--space-4));
+      max-width: 460px;
+      max-height: calc(100% - 2 * var(--space-4));
+      margin: auto;
+      padding: 0;
+      border: none;
+      border-radius: var(--radius-lg);
+      background: var(--white);
+      color: var(--text);
+      box-shadow: var(--shadow-md);
+      overflow: auto;
+    }
+    .workshop-modal[open] { animation: workshop-in 0.35s ease; }
+    .workshop-modal::backdrop { background: rgba(7, 26, 51, 0.6); }
+    @keyframes workshop-in {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .workshop-head {
+      position: relative;
+      background: var(--navy);
+      color: var(--white);
+      padding: var(--space-6) var(--space-5) var(--space-5);
+    }
+    .workshop-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      margin-bottom: var(--space-3);
+    }
+    .workshop-head h2 {
+      color: var(--white);
+      font-size: 1.6rem;
+      line-height: 1.25;
+      margin-bottom: var(--space-3);
+    }
+    .workshop-details { display: grid; gap: var(--space-1); font-size: 0.95rem; color: rgba(255, 255, 255, 0.85); }
+    .workshop-details strong { color: var(--gold-light); font-weight: 600; }
+    .workshop-close {
+      position: absolute;
+      top: var(--space-3);
+      right: var(--space-3);
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--white);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .workshop-close:hover,
+    .workshop-close:focus-visible { background: rgba(255, 255, 255, 0.15); }
+
+    .workshop-body { padding: var(--space-5); }
+    .workshop-body > p { color: var(--muted); font-size: 0.95rem; margin-bottom: var(--space-4); }
+    .workshop-form { display: grid; gap: var(--space-4); }
+    .workshop-form .btn { width: 100%; }
+    .workshop-later {
+      display: block;
+      margin: var(--space-3) auto 0;
+      border: none;
+      background: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .workshop-later:hover { color: var(--navy); }
+    .workshop-success { text-align: center; }
+    .workshop-success h3 { color: var(--navy); margin-bottom: var(--space-2); }
+    .workshop-success:focus { outline: none; }
+    .workshop-success .btn { margin-top: var(--space-4); }
+
+    /* =========================================================
+       11. CHATBOT WIDGET (bottom left, links to WhatsApp)
+       ========================================================= */
+    .chatbot {
+      position: fixed;
+      left: var(--space-5);
+      bottom: var(--space-5);
+      z-index: 1010; /* above the sticky header so the open panel is never covered */
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-3);
+    }
+
+    .chatbot-toggle {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      border: 3px solid var(--white);
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      animation: chatbot-bob 3s ease-in-out infinite;
+      transition: transform var(--transition), background var(--transition);
+    }
+    .chatbot-toggle:hover { background: var(--gold-light); transform: scale(1.08); animation-play-state: paused; }
+    .chatbot-toggle[aria-expanded="true"] { animation: none; }
+    /* Little green "online" dot */
+    .chatbot-toggle::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--success);
+      border: 2px solid var(--white);
+    }
+    .chatbot-eye { transform-origin: center; animation: chatbot-blink 4s infinite; }
+    @keyframes chatbot-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes chatbot-blink {
+      0%, 92%, 100% { transform: scaleY(1); }
+      96% { transform: scaleY(0.1); }
+    }
+
+    .chatbot-panel {
+      width: min(300px, calc(100vw - 2 * var(--space-5)));
+      /* Leave room for the 60px toggle on short screens */
+      max-height: calc(100vh - 60px - 2 * var(--space-5) - var(--space-3));
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: auto;
+      transform-origin: bottom left;
+      animation: chatbot-pop 0.25s ease;
+    }
+    .chatbot-panel[hidden] { display: none; }
+    @keyframes chatbot-pop {
+      from { opacity: 0; transform: scale(0.9) translateY(10px); }
+      to { opacity: 1; transform: none; }
+    }
+    .chatbot-head {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      background: var(--navy);
+      color: var(--white);
+      padding: var(--space-3) var(--space-4);
+    }
+    .chatbot-head strong { display: block; font-size: 0.95rem; }
+    .chatbot-head span { font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); }
+    .chatbot-avatar {
+      flex: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+    }
+    .chatbot-close {
+      margin-left: auto;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--white);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+    .chatbot-close:hover { background: rgba(255, 255, 255, 0.15); }
+    .chatbot-body { padding: var(--space-4); background: var(--bg); }
+    .chatbot-bubble {
+      background: var(--white);
+      border-radius: var(--radius) var(--radius) var(--radius) 2px;
+      box-shadow: var(--shadow-sm);
+      padding: var(--space-3) var(--space-4);
+      font-size: 0.95rem;
+      margin-bottom: var(--space-4);
+    }
+    .chatbot-whatsapp {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 999px;
+      background: var(--whatsapp);
+      color: var(--white);
+      font-weight: 600;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .chatbot-whatsapp:hover { background: var(--whatsapp-dark); transform: translateY(-2px); }
+
+    /* =========================================================
+       12. RESPONSIVE: TABLET (min-width: 768px)
        ========================================================= */
     @media (min-width: 768px) {
       .container { padding: 0 var(--space-6); }
@@ -855,10 +1070,13 @@
       .newsletter-form { flex-direction: row; flex-wrap: wrap; }
       .newsletter-form input { flex: 1 1 180px; }
       .newsletter-msg { flex-basis: 100%; }
+
+      .workshop-head { padding: var(--space-7) var(--space-6) var(--space-6); }
+      .workshop-body { padding: var(--space-6); }
     }
 
     /* =========================================================
-       11. RESPONSIVE: DESKTOP (min-width: 1024px)
+       13. RESPONSIVE: DESKTOP (min-width: 1024px)
        ========================================================= */
     @media (min-width: 1024px) {
       .section { padding: 6rem 0; }
@@ -883,6 +1101,7 @@
         transition-duration: 0.01ms !important;
       }
       .fade-in { opacity: 1; transform: none; }
+      .chatbot-toggle, .chatbot-eye { animation: none; }
     }
   </style>
 </head>
@@ -1292,6 +1511,79 @@
   <button class="back-to-top" id="back-to-top" aria-label="Back to top">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
+
+  <!-- =========================================================
+       CHATBOT WIDGET (bottom left, links to WhatsApp)
+       ========================================================= -->
+  <div class="chatbot" id="chatbot">
+    <div class="chatbot-panel" id="chatbot-panel" role="region" aria-label="Chat with Horizon Wealth" hidden>
+      <div class="chatbot-head">
+        <span class="chatbot-avatar" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 32 32"><rect x="6" y="9" width="20" height="16" rx="6" fill="currentColor"/><circle cx="12.5" cy="17" r="2" fill="#FFFFFF"/><circle cx="19.5" cy="17" r="2" fill="#FFFFFF"/><path d="M16 9V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="4" r="2" fill="currentColor"/></svg>
+        </span>
+        <div>
+          <strong>Horizon Helper</strong>
+          <span>Typically replies within minutes</span>
+        </div>
+        <button type="button" class="chatbot-close" id="chatbot-close" aria-label="Close chat">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="chatbot-body">
+        <p class="chatbot-bubble">Hi there! 👋 How can I help you?</p>
+        <a class="chatbot-whatsapp" href="https://wa.me/6512345678?text=Hi%20Horizon%20Wealth%2C%20I%20have%20a%20question." target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <button type="button" class="chatbot-toggle" id="chatbot-toggle" aria-expanded="false" aria-controls="chatbot-panel" aria-label="Open chat">
+      <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 8V5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="16" cy="4" r="2" fill="currentColor"/>
+        <rect x="5" y="8" width="22" height="18" rx="7" fill="currentColor"/>
+        <g class="chatbot-eye"><circle cx="12" cy="16" r="2.3" fill="#FFFFFF"/><circle cx="20" cy="16" r="2.3" fill="#FFFFFF"/></g>
+        <path d="M12.5 21q3.5 2.5 7 0" stroke="#FFFFFF" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <circle cx="9" cy="20" r="1.2" fill="#F2A7B5"/>
+        <circle cx="23" cy="20" r="1.2" fill="#F2A7B5"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- =========================================================
+       WORKSHOP POPUP (opens after 10s on the page)
+       ========================================================= -->
+  <dialog class="workshop-modal" id="workshop-modal" aria-labelledby="workshop-title" aria-describedby="workshop-desc">
+    <div class="workshop-head">
+      <button type="button" class="workshop-close" id="workshop-close" aria-label="Close workshop invitation">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <span class="workshop-badge">Free workshop</span>
+      <h2 id="workshop-title">Financial Planning Workshop</h2>
+      <div class="workshop-details">
+        <span><strong>When:</strong> Wednesday, 14 October, 1:00 pm</span>
+        <span><strong>Where:</strong> Bukit Timah</span>
+      </div>
+    </div>
+    <div class="workshop-body" id="workshop-body">
+      <p id="workshop-desc">Join our planners for a free, no-obligation session on budgeting, investing and retirement. Seats are limited, so leave your details to reserve yours.</p>
+      <form class="workshop-form" id="workshop-form" novalidate>
+        <div class="form-group">
+          <label for="workshop-name">Name</label>
+          <input type="text" id="workshop-name" name="workshopName" class="form-control" autocomplete="name" required aria-required="true" aria-describedby="workshopName-error">
+          <span class="error-msg" id="workshopName-error" aria-live="polite"></span>
+        </div>
+        <div class="form-group">
+          <label for="workshop-email">Email</label>
+          <input type="email" id="workshop-email" name="workshopEmail" class="form-control" autocomplete="email" placeholder="you@example.com" required aria-required="true" aria-describedby="workshopEmail-error">
+          <span class="error-msg" id="workshopEmail-error" aria-live="polite"></span>
+        </div>
+        <button type="submit" class="btn btn-gold">Reserve my seat</button>
+      </form>
+      <button type="button" class="workshop-later" id="workshop-later">No thanks</button>
+    </div>
+  </dialog>
 
   <script>
     (function () {
@@ -1728,6 +2020,150 @@
          8. FOOTER YEAR
          ========================================================= */
       document.getElementById('year').textContent = new Date().getFullYear();
+
+      /* =========================================================
+         9. WORKSHOP POPUP (after 10 seconds on the page)
+         ========================================================= */
+      const workshopModal = document.getElementById('workshop-modal');
+      const workshopForm = document.getElementById('workshop-form');
+      const WORKSHOP_DELAY_MS = 10000;
+      const WORKSHOP_ENDS = new Date('2026-10-14T13:00:00+08:00');
+      const WORKSHOP_KEY = 'hwp-workshop-2026-10-14';
+
+      // Storage can throw in private mode; treat that as "not seen yet"
+      function workshopSeen() {
+        try { return localStorage.getItem(WORKSHOP_KEY) !== null; } catch (err) { return false; }
+      }
+      function markWorkshopSeen(value) {
+        try { localStorage.setItem(WORKSHOP_KEY, value); } catch (err) { /* ignore */ }
+      }
+
+      // Wait while the visitor is typing in another form, then retry
+      function openWorkshop() {
+        const active = document.activeElement;
+        if (active && active.matches('input, textarea, select')) {
+          setTimeout(openWorkshop, 3000);
+          return;
+        }
+        workshopModal.showModal();
+      }
+
+      function closeWorkshop() {
+        if (!workshopSeen()) markWorkshopSeen('dismissed');
+        workshopModal.close();
+      }
+
+      if (typeof workshopModal.showModal === 'function' && !workshopSeen() && Date.now() < WORKSHOP_ENDS.getTime()) {
+        setTimeout(openWorkshop, WORKSHOP_DELAY_MS);
+      }
+
+      document.getElementById('workshop-close').addEventListener('click', closeWorkshop);
+      document.getElementById('workshop-later').addEventListener('click', closeWorkshop);
+      workshopModal.addEventListener('cancel', () => { if (!workshopSeen()) markWorkshopSeen('dismissed'); });
+      // Clicking the backdrop (outside the panel) closes it
+      workshopModal.addEventListener('click', e => { if (e.target === workshopModal) closeWorkshop(); });
+
+      const workshopValidators = {
+        workshopName: () => {
+          const v = workshopForm.workshopName.value.trim();
+          if (!v) return 'Please enter your name.';
+          if (v.length < 2) return 'Name must be at least 2 characters.';
+          return '';
+        },
+        workshopEmail: () => {
+          const v = workshopForm.workshopEmail.value.trim();
+          if (!v) return 'Please enter your email address.';
+          if (!EMAIL_RE.test(v)) return 'Please enter a valid email address (e.g. name@example.com).';
+          return '';
+        }
+      };
+
+      function validateWorkshopField(name) {
+        const message = workshopValidators[name]();
+        const input = workshopForm.elements[name];
+        input.classList.toggle('invalid', message !== '');
+        if (message) input.setAttribute('aria-invalid', 'true');
+        else input.removeAttribute('aria-invalid');
+        document.getElementById(name + '-error').textContent = message;
+        return message === '';
+      }
+
+      Object.keys(workshopValidators).forEach(name => {
+        workshopForm.elements[name].addEventListener('input', () => {
+          if (workshopForm.elements[name].classList.contains('invalid')) validateWorkshopField(name);
+        });
+      });
+
+      workshopForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const firstInvalid = Object.keys(workshopValidators).find(name => !validateWorkshopField(name));
+        if (firstInvalid) {
+          workshopForm.elements[firstInvalid].focus();
+          return;
+        }
+
+        const name = workshopForm.workshopName.value.trim();
+        console.log('Workshop registration:', JSON.stringify({
+          name,
+          email: workshopForm.workshopEmail.value.trim(),
+          workshop: 'Financial Planning Workshop, Bukit Timah, 14 Oct 2026 1pm',
+          submittedAt: new Date().toISOString()
+        }, null, 2));
+        markWorkshopSeen('registered');
+
+        const success = document.createElement('div');
+        success.className = 'workshop-success';
+        success.setAttribute('role', 'status');
+        success.setAttribute('tabindex', '-1');
+        success.innerHTML = '<h3></h3><p>Your seat is reserved. We\'ll email you the venue details before Wednesday.</p>' +
+          '<button type="button" class="btn btn-navy">Close</button>';
+        // textContent prevents any HTML in the user's name from being rendered
+        success.querySelector('h3').textContent = 'See you there, ' + name + '!';
+        success.querySelector('button').addEventListener('click', () => workshopModal.close());
+
+        document.getElementById('workshop-body').replaceChildren(success);
+        success.focus();
+      });
+
+      /* =========================================================
+         10. CHATBOT WIDGET (spoken greeting + WhatsApp link)
+         ========================================================= */
+      const chatToggle = document.getElementById('chatbot-toggle');
+      const chatPanel = document.getElementById('chatbot-panel');
+      const CHAT_GREETING = 'How can I help you?';
+
+      // Read the greeting aloud with the browser's built-in speech
+      function speakGreeting() {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(CHAT_GREETING);
+        utterance.lang = 'en-US';
+        utterance.rate = 1;
+        utterance.pitch = 1.2;
+        window.speechSynthesis.speak(utterance);
+      }
+
+      function setChat(open) {
+        chatPanel.hidden = !open;
+        chatToggle.setAttribute('aria-expanded', String(open));
+        chatToggle.setAttribute('aria-label', open ? 'Close chat' : 'Open chat');
+        if (open) speakGreeting();
+        else if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      }
+
+      chatToggle.addEventListener('click', () => {
+        setChat(chatPanel.hidden);
+      });
+      document.getElementById('chatbot-close').addEventListener('click', () => {
+        setChat(false);
+        chatToggle.focus();
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !chatPanel.hidden) {
+          setChat(false);
+          chatToggle.focus();
+        }
+      });
     })();
   </script>
 </body>
