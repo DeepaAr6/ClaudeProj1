@@ -1,0 +1,3402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Horizon Wealth Planning: independent retirement, investment, insurance and tax planning in Sydney. Live market updates, a free retirement calculator and a no-obligation consultation.">
+  <meta name="theme-color" content="#0B2545">
+  <title>Horizon Wealth Planning | Independent Financial Advice in Sydney</title>
+
+  <!-- Google Fonts: Playfair Display (headings) + Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       1. DESIGN TOKENS (CSS custom properties)
+       ========================================================= */
+    :root {
+      /* Colors */
+      --ink: #081B2E;
+      --navy: #0B2545;
+      --navy-light: #13315C;
+      --teal: #0F766E;
+      --teal-dark: #0B5E58;
+      --teal-tint: #E3F3F0;
+      --gold: #C9A227;
+      --gold-dark: #8A6D0F;
+      --gold-light: #E6C65C;
+      --gold-tint: #FBF5E1;
+      --bg: #F6F8FB;
+      --white: #FFFFFF;
+      --text: #1A2638;
+      --muted: #556274;
+      --border: #DDE3EC;
+      --up: #15803D;
+      --down: #B42318;
+      --error: #C5221F;
+      --success: #1E8E3E;
+      --on-dark: rgba(255, 255, 255, 0.86);
+      --on-dark-muted: rgba(255, 255, 255, 0.66);
+
+      /* Typography */
+      --font-heading: "Playfair Display", Georgia, "Times New Roman", serif;
+      --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+      /* Spacing scale */
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.5rem;
+      --space-6: 2rem;
+      --space-7: 3rem;
+      --space-8: 4.5rem;
+
+      /* Misc */
+      --radius: 10px;
+      --radius-lg: 18px;
+      --shadow-sm: 0 2px 8px rgba(11, 37, 69, 0.07);
+      --shadow-md: 0 12px 32px rgba(11, 37, 69, 0.12);
+      --shadow-lg: 0 24px 60px rgba(8, 27, 46, 0.22);
+      --transition: 0.25s ease;
+      --nav-height: 72px;
+      --container: 1200px;
+      --mobile-bar: 64px;
+    }
+
+    /* =========================================================
+       2. BASE / RESET
+       ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--nav-height);
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: var(--mobile-bar);
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+
+    h1, h2, h3 {
+      font-family: var(--font-heading);
+      line-height: 1.2;
+      color: var(--navy);
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: var(--space-4);
+      top: -60px;
+      z-index: 2000;
+      padding: var(--space-2) var(--space-4);
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 600;
+      border-radius: var(--radius);
+    }
+    .skip-link:focus { top: var(--space-2); }
+
+    .container {
+      width: 100%;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 var(--space-4);
+    }
+
+    .section { padding: var(--space-8) 0; }
+    .section-alt { background: var(--white); }
+
+    .section-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto var(--space-7);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: var(--space-2);
+    }
+
+    .section-title {
+      font-size: clamp(1.9rem, 4vw, 2.7rem);
+      margin-bottom: var(--space-3);
+    }
+
+    .section-subtitle { color: var(--muted); font-size: 1.05rem; }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0);
+      white-space: nowrap; border: 0;
+    }
+
+    /* Fade-in-on-scroll animation (toggled by IntersectionObserver) */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* =========================================================
+       3. BUTTONS
+       ========================================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: 0.9rem 1.7rem;
+      border-radius: 50px;
+      border: 2px solid transparent;
+      font-weight: 600;
+      font-size: 1rem;
+      line-height: 1.2;
+      cursor: pointer;
+      text-align: center;
+      transition: transform var(--transition), box-shadow var(--transition),
+                  background var(--transition), color var(--transition), border-color var(--transition);
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy);
+      box-shadow: 0 6px 20px rgba(201, 162, 39, 0.35);
+    }
+    .btn-gold:hover {
+      background: var(--gold-light);
+      box-shadow: 0 10px 28px rgba(201, 162, 39, 0.45);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border-color: rgba(255, 255, 255, 0.7);
+    }
+    .btn-outline:hover {
+      background: var(--white);
+      color: var(--navy);
+    }
+
+    .btn-navy {
+      background: var(--navy);
+      color: var(--white);
+    }
+    .btn-navy:hover {
+      background: var(--navy-light);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-teal {
+      background: var(--teal);
+      color: var(--white);
+    }
+    .btn-teal:hover { background: var(--teal-dark); box-shadow: var(--shadow-md); }
+
+    .btn-block { width: 100%; }
+
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-weight: 600;
+      color: var(--teal);
+    }
+    .text-link:hover { color: var(--teal-dark); text-decoration: underline; }
+
+    /* Loading spinner state */
+    .btn .spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-top-color: var(--white);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .btn.loading { pointer-events: none; opacity: 0.85; }
+    .btn.loading .spinner { display: inline-block; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* =========================================================
+       4. ANNOUNCEMENT BAR + HEADER / NAVIGATION
+       ========================================================= */
+    .announce {
+      background: var(--teal);
+      color: var(--white);
+      font-size: 0.88rem;
+    }
+    .announce .container {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding-top: var(--space-2);
+      padding-bottom: var(--space-2);
+    }
+    .announce p { flex: 1; }
+    .announce a { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+    .announce a:hover { color: var(--gold-light); }
+    .announce-close {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--white);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+    }
+    .announce-close:hover { background: rgba(255, 255, 255, 0.15); }
+    .announce[hidden] { display: none; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: var(--nav-height);
+      background: rgba(11, 37, 69, 0.97);
+      backdrop-filter: blur(8px);
+      transition: box-shadow var(--transition);
+    }
+    .site-header.scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); }
+
+    .nav {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .logo span { color: var(--gold); }
+    .logo svg { flex-shrink: 0; }
+
+    /* Hamburger toggle (mobile) */
+    .nav-toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      padding: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .nav-toggle .bar {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; }
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile menu panel */
+    .nav-menu {
+      position: absolute;
+      top: var(--nav-height);
+      left: 0;
+      right: 0;
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      padding: 0 var(--space-4);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .nav-menu.open {
+      max-height: 520px;
+      padding: var(--space-3) var(--space-4) var(--space-5);
+    }
+
+    .nav-link {
+      display: block;
+      padding: var(--space-3) 0;
+      color: var(--on-dark);
+      font-weight: 500;
+      position: relative;
+      transition: color var(--transition);
+    }
+    .nav-link:hover, .nav-link:focus-visible { color: var(--gold); }
+
+    .nav-phone {
+      display: none;
+      align-items: center;
+      gap: var(--space-2);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.92rem;
+      white-space: nowrap;
+    }
+    .nav-phone:hover { color: var(--gold); }
+
+    .nav-cta { margin-top: var(--space-3); }
+
+    /* =========================================================
+       5. HERO + QUICK-START LEAD FORM
+       ========================================================= */
+    .hero {
+      position: relative;
+      padding: var(--space-7) 0 var(--space-8);
+      color: var(--white);
+      background:
+        linear-gradient(120deg, rgba(8, 27, 46, 0.96) 0%, rgba(11, 37, 69, 0.88) 50%, rgba(15, 118, 110, 0.72) 100%),
+        url("https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1920&q=75") center / cover no-repeat;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-7);
+      align-items: center;
+    }
+
+    .hero .eyebrow { color: var(--gold-light); }
+
+    .hero h1 {
+      color: var(--white);
+      font-size: clamp(2.3rem, 6.5vw, 3.9rem);
+      margin-bottom: var(--space-4);
+    }
+    .hero h1 em { font-style: normal; color: var(--gold); }
+
+    .hero-sub {
+      font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+      color: var(--on-dark);
+      max-width: 580px;
+      margin-bottom: var(--space-6);
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      margin-bottom: var(--space-6);
+    }
+
+    .trust-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2) var(--space-5);
+      font-size: 0.92rem;
+      color: var(--on-dark);
+    }
+    .trust-list li { display: flex; align-items: center; gap: var(--space-2); }
+    .trust-list svg { color: var(--gold); flex-shrink: 0; }
+
+    .quick-card {
+      background: var(--white);
+      color: var(--text);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6) var(--space-5);
+      box-shadow: var(--shadow-lg);
+      border-top: 5px solid var(--gold);
+    }
+    .quick-card h2 { font-size: 1.55rem; margin-bottom: var(--space-1); }
+    .quick-card > p { color: var(--muted); font-size: 0.95rem; margin-bottom: var(--space-5); }
+    .quick-card .form-group { margin-bottom: var(--space-2); }
+    .quick-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      margin-top: var(--space-3);
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5) var(--space-4);
+      margin-top: var(--space-7);
+      padding-top: var(--space-6);
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: clamp(1.9rem, 5vw, 2.6rem);
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-label {
+      font-size: 0.88rem;
+      color: var(--on-dark-muted);
+      letter-spacing: 0.03em;
+    }
+
+    /* =========================================================
+       6. LIVE MARKET TICKER
+       ========================================================= */
+    .ticker {
+      background: var(--ink);
+      color: var(--white);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.88rem;
+    }
+    .ticker .container {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      min-height: 48px;
+    }
+    .ticker-label {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34D399;
+      box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
+      animation: pulse 2s infinite;
+    }
+    .live-dot.offline { background: var(--muted); animation: none; }
+    @keyframes pulse {
+      70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+    }
+    .ticker-viewport {
+      flex: 1;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+      mask-image: linear-gradient(90deg, #000 85%, transparent);
+    }
+    .ticker-viewport::-webkit-scrollbar { display: none; }
+    .ticker-list {
+      display: flex;
+      gap: var(--space-6);
+      white-space: nowrap;
+      padding: var(--space-3) 0;
+    }
+    .ticker-item { display: inline-flex; gap: var(--space-2); align-items: baseline; }
+    .ticker-item .sym { color: var(--on-dark-muted); font-weight: 500; }
+    .ticker-item .val { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .chg { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .ticker .chg.up { color: #4ADE80; }
+    .ticker .chg.down { color: #F87171; }
+
+    /* =========================================================
+       7. SERVICES
+       ========================================================= */
+    .services-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-5);
+    }
+
+    .service-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+      border-color: transparent;
+    }
+    .service-media {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: var(--navy);
+    }
+    .service-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: filter var(--transition);
+    }
+    .service-card:hover .service-media img { filter: saturate(1.15) brightness(1.04); }
+    .service-icon {
+      position: absolute;
+      left: var(--space-5);
+      bottom: -22px;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--gold);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .service-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: var(--space-6) var(--space-5) var(--space-5);
+    }
+    .service-body h3 { font-size: 1.3rem; margin-bottom: var(--space-2); }
+    .service-body p { color: var(--muted); margin-bottom: var(--space-4); flex: 1; }
+    .service-ticks { margin-bottom: var(--space-4); font-size: 0.92rem; }
+    .service-ticks li { display: flex; gap: var(--space-2); align-items: flex-start; margin-bottom: var(--space-1); }
+    .service-ticks svg { color: var(--teal); flex-shrink: 0; margin-top: 4px; }
+
+    /* =========================================================
+       8. MARKET TRENDS
+       ========================================================= */
+    .markets { background: var(--white); }
+
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+    .snap-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-4);
+    }
+    .snap-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .snap-value {
+      font-family: var(--font-heading);
+      font-size: clamp(1.4rem, 4vw, 1.85rem);
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.25;
+      font-variant-numeric: tabular-nums;
+    }
+    .snap-note { font-size: 0.82rem; color: var(--muted); }
+    .chg.up { color: var(--up); }
+    .chg.down { color: var(--down); }
+    .chg.flat { color: var(--muted); }
+
+    .data-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: var(--space-6);
+    }
+    .data-note a { text-decoration: underline; }
+
+    .markets-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-5);
+    }
+    .markets-grid > * { min-width: 0; }
+
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+    }
+    .panel-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+    .panel-head h3 { font-size: 1.25rem; }
+    .panel-sub { font-size: 0.85rem; color: var(--muted); }
+
+    .seg {
+      display: inline-flex;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 3px;
+    }
+    .seg button {
+      border: none;
+      background: none;
+      padding: 0.35rem 0.8rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+    }
+    .seg button:hover { color: var(--navy); }
+    .seg button[aria-pressed="true"] { background: var(--navy); color: var(--white); }
+
+    .fx-figure { display: flex; align-items: baseline; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-3); }
+    .fx-big {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--navy);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .chart-wrap { position: relative; }
+    .chart-wrap svg { width: 100%; height: auto; display: block; overflow: visible; }
+    .chart-axis { font-size: 11px; fill: var(--muted); font-family: var(--font-body); }
+    .chart-grid { stroke: var(--border); stroke-width: 1; }
+    .chart-tip {
+      position: absolute;
+      top: 0;
+      transform: translateX(-50%);
+      background: var(--navy);
+      color: var(--white);
+      font-size: 0.78rem;
+      padding: var(--space-1) var(--space-2);
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      font-variant-numeric: tabular-nums;
+    }
+    .chart-tip.show { opacity: 1; }
+
+    .chart-skeleton {
+      height: 220px;
+      border-radius: var(--radius);
+      background: linear-gradient(90deg, var(--bg) 25%, #EDF1F6 50%, var(--bg) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+
+    .crypto-list { display: grid; gap: var(--space-3); }
+    .crypto-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: var(--space-1) var(--space-3);
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .crypto-row:last-child { border-bottom: none; }
+    .crypto-name { font-weight: 600; color: var(--navy); }
+    .crypto-name small { display: block; font-weight: 500; color: var(--muted); font-size: 0.8rem; }
+    .crypto-price { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .crypto-price .chg { display: block; font-size: 0.82rem; }
+    .crypto-spark { grid-column: 1 / -1; }
+    .crypto-spark svg { width: 100%; height: 44px; display: block; }
+
+    .insights {
+      margin-top: var(--space-6);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-4);
+    }
+    .insight {
+      border-left: 4px solid var(--gold);
+      background: var(--gold-tint);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: var(--space-4) var(--space-5);
+    }
+    .insight h3 { font-size: 1.1rem; margin-bottom: var(--space-1); }
+    .insight p { color: var(--text); font-size: 0.95rem; margin-bottom: var(--space-2); }
+
+    /* =========================================================
+       9. RETIREMENT CALCULATOR
+       ========================================================= */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-5);
+    }
+    .calc-grid > * { min-width: 0; }
+
+    .range-field { margin-bottom: var(--space-5); }
+    .range-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--space-3);
+      margin-bottom: var(--space-2);
+    }
+    .range-top label { font-weight: 500; color: var(--navy); font-size: 0.95rem; }
+    .range-top output {
+      font-weight: 700;
+      color: var(--teal);
+      font-variant-numeric: tabular-nums;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--teal);
+      height: 28px;
+      cursor: pointer;
+    }
+
+    .calc-result {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6) var(--space-5);
+      background-image: radial-gradient(circle at 100% 0%, rgba(201, 162, 39, 0.2), transparent 55%);
+    }
+    .calc-result .eyebrow { color: var(--gold-light); }
+    .calc-total {
+      font-family: var(--font-heading);
+      font-size: clamp(2.2rem, 7vw, 3.2rem);
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+    .calc-sub { color: var(--on-dark); margin: var(--space-2) 0 var(--space-5); }
+    .calc-breakdown {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+      margin-bottom: var(--space-5);
+    }
+    .calc-breakdown div {
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius);
+      padding: var(--space-3);
+    }
+    .calc-breakdown dt { font-size: 0.78rem; color: var(--on-dark-muted); display: flex; align-items: center; gap: var(--space-2); }
+    .calc-breakdown dd { font-weight: 700; font-variant-numeric: tabular-nums; }
+    .key { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+    .key-contrib { background: var(--on-dark-muted); }
+    .key-growth { background: var(--gold); }
+    .calc-chart { margin-bottom: var(--space-5); }
+    .calc-chart svg { width: 100%; height: auto; display: block; }
+    .calc-disclaimer { font-size: 0.75rem; color: var(--on-dark-muted); margin-top: var(--space-3); }
+
+    /* =========================================================
+       10. PROCESS STEPS
+       ========================================================= */
+    .steps {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-5);
+      counter-reset: step;
+    }
+    .step {
+      position: relative;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6) var(--space-5) var(--space-5);
+    }
+    .step::before {
+      counter-increment: step;
+      content: counter(step, decimal-leading-zero);
+      display: block;
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: var(--space-3);
+    }
+    .step h3 { font-size: 1.2rem; margin-bottom: var(--space-2); }
+    .step p { color: var(--muted); font-size: 0.95rem; }
+    .step-meta { margin-top: var(--space-3); font-size: 0.82rem; font-weight: 600; color: var(--teal); }
+
+    /* =========================================================
+       11. TESTIMONIALS CAROUSEL
+       ========================================================= */
+    .testimonials { background: var(--white); }
+
+    .rating-summary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-top: var(--space-3);
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .rating-summary .stars { margin: 0; }
+
+    .carousel { position: relative; }
+
+    .carousel-viewport {
+      overflow: hidden;
+      touch-action: pan-y;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+      will-change: transform;
+    }
+
+    .carousel-slide {
+      flex: 0 0 100%;
+      padding: var(--space-3);
+    }
+
+    .testimonial-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      position: relative;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .testimonial-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+    }
+    .testimonial-card::before {
+      content: "\201C";
+      position: absolute;
+      top: 0.4rem;
+      right: 1.4rem;
+      font-family: var(--font-heading);
+      font-size: 5rem;
+      color: var(--gold);
+      opacity: 0.25;
+      line-height: 1;
+    }
+
+    .stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: var(--space-4);
+      color: var(--gold);
+    }
+
+    .testimonial-quote {
+      flex-grow: 1;
+      color: var(--text);
+      margin-bottom: var(--space-5);
+    }
+
+    .client {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .client img {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--gold);
+    }
+    .client-name {
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .client-role {
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+    .client-tag {
+      display: inline-block;
+      margin-top: var(--space-1);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 50px;
+      background: var(--teal-tint);
+      color: var(--teal-dark);
+    }
+
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-5);
+      margin-top: var(--space-5);
+    }
+
+    .carousel-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 2px solid var(--navy);
+      background: var(--white);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition), transform var(--transition);
+    }
+    .carousel-btn:hover {
+      background: var(--navy);
+      color: var(--gold);
+      transform: scale(1.08);
+    }
+
+    .carousel-dots {
+      display: flex;
+      gap: var(--space-2);
+    }
+    .carousel-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: none;
+      background: var(--border);
+      cursor: pointer;
+      transition: background var(--transition), width var(--transition);
+    }
+    .carousel-dot:hover { background: var(--gold-light); }
+    .carousel-dot[aria-current="true"] {
+      background: var(--gold);
+      width: 30px;
+      border-radius: 6px;
+    }
+
+    /* =========================================================
+       12. FREE GUIDE (LEAD MAGNET)
+       ========================================================= */
+    .guide {
+      background: var(--teal);
+      color: var(--white);
+      background-image:
+        radial-gradient(circle at 0% 100%, rgba(201, 162, 39, 0.25), transparent 45%),
+        radial-gradient(circle at 100% 0%, rgba(8, 27, 46, 0.45), transparent 50%);
+    }
+    .guide-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-6);
+      align-items: center;
+    }
+    .guide .eyebrow { color: var(--gold-light); }
+    .guide h2 { color: var(--white); font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: var(--space-3); }
+    .guide-lead { color: var(--on-dark); margin-bottom: var(--space-4); }
+    .guide-points li { display: flex; gap: var(--space-2); margin-bottom: var(--space-2); color: var(--on-dark); }
+    .guide-points svg { color: var(--gold-light); flex-shrink: 0; margin-top: 4px; }
+
+    .guide-cover {
+      display: none;
+      aspect-ratio: 3 / 4;
+      max-width: 230px;
+      border-radius: 6px 14px 14px 6px;
+      background: linear-gradient(160deg, var(--navy) 0%, var(--ink) 100%);
+      box-shadow: var(--shadow-lg), inset 6px 0 0 rgba(255, 255, 255, 0.08);
+      padding: var(--space-5);
+      color: var(--white);
+      flex-direction: column;
+      justify-content: space-between;
+      transform: rotate(-4deg);
+    }
+    .guide-cover strong { font-family: var(--font-heading); font-size: 1.45rem; line-height: 1.2; }
+    .guide-cover span { font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-light); }
+
+    .guide-card {
+      background: var(--white);
+      color: var(--text);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6) var(--space-5);
+      box-shadow: var(--shadow-lg);
+    }
+    .guide-card h3 { font-size: 1.3rem; margin-bottom: var(--space-4); }
+    .guide-card .form-group { margin-bottom: var(--space-2); }
+
+    /* =========================================================
+       13. FAQ
+       ========================================================= */
+    .faq-list { max-width: 820px; margin: 0 auto; }
+    .faq-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: var(--space-3);
+      transition: box-shadow var(--transition);
+    }
+    .faq-item[open] { box-shadow: var(--shadow-sm); }
+    .faq-item summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-4) var(--space-5);
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: "+";
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--teal-tint);
+      color: var(--teal-dark);
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      line-height: 1;
+      transition: transform var(--transition);
+    }
+    .faq-item[open] summary::after { transform: rotate(45deg); }
+    .faq-item p { padding: 0 var(--space-5) var(--space-5); color: var(--muted); }
+
+    /* =========================================================
+       14. ENQUIRY / CONTACT
+       ========================================================= */
+    .contact-grid > * { min-width: 0; }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-6);
+    }
+
+    .contact-info {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      background-image: radial-gradient(circle at 100% 0%, rgba(201, 162, 39, 0.18), transparent 50%);
+    }
+    .contact-info h3 {
+      color: var(--white);
+      font-size: 1.6rem;
+      margin-bottom: var(--space-3);
+    }
+    .contact-info > p {
+      color: var(--on-dark-muted);
+      margin-bottom: var(--space-6);
+    }
+
+    .info-list { display: grid; gap: var(--space-5); }
+
+    .info-item {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+    }
+    .info-icon {
+      flex-shrink: 0;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(201, 162, 39, 0.15);
+      color: var(--gold);
+      display: grid;
+      place-items: center;
+      transition: background var(--transition), color var(--transition);
+    }
+    .info-item:hover .info-icon {
+      background: var(--gold);
+      color: var(--navy);
+    }
+    .info-title {
+      font-weight: 600;
+      color: var(--gold);
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .info-item > div { min-width: 0; }
+    .info-text {
+      color: var(--on-dark);
+      font-style: normal;
+      overflow-wrap: anywhere;
+    }
+    .info-text a:hover { color: var(--gold); }
+
+    .promise {
+      margin-top: var(--space-6);
+      padding-top: var(--space-5);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 0.92rem;
+      color: var(--on-dark);
+    }
+    .promise li { display: flex; gap: var(--space-2); margin-bottom: var(--space-2); }
+    .promise svg { color: var(--gold); flex-shrink: 0; margin-top: 4px; }
+
+    .form-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6) var(--space-5);
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-progress {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-5);
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .form-progress-bar {
+      flex: 1;
+      height: 6px;
+      border-radius: 6px;
+      background: var(--border);
+      overflow: hidden;
+    }
+    .form-progress-bar span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transition: width 0.4s ease;
+    }
+
+    .prefill-note {
+      display: none;
+      margin-bottom: var(--space-4);
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius);
+      background: var(--teal-tint);
+      color: var(--teal-dark);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .prefill-note.show { display: block; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4) var(--space-5);
+    }
+
+    .form-group { display: flex; flex-direction: column; }
+    .form-group.full { grid-column: 1 / -1; }
+
+    .form-group label,
+    .form-group legend {
+      font-weight: 500;
+      font-size: 0.92rem;
+      color: var(--navy);
+      margin-bottom: var(--space-2);
+    }
+    .required { color: var(--error); }
+    .optional { color: var(--muted); font-weight: 400; font-size: 0.82rem; }
+
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--white);
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .form-control:hover { border-color: #AEB9C9; }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.12);
+    }
+
+    select.form-control {
+      appearance: none;
+      cursor: pointer;
+      padding-right: 2.5rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230B2545' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+
+    textarea.form-control { resize: vertical; min-height: 110px; }
+
+    fieldset.form-group { border: none; }
+
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+    .radio-option {
+      position: relative;
+      cursor: pointer;
+    }
+    .radio-option input {
+      position: absolute;
+      opacity: 0;
+      width: 1px;
+      height: 1px;
+    }
+    .radio-option span {
+      display: inline-block;
+      padding: 0.55rem 1.1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: background var(--transition), border-color var(--transition), color var(--transition);
+    }
+    .radio-option:hover span { border-color: var(--navy); }
+    .radio-option input:checked + span {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: var(--white);
+    }
+    .radio-option input:focus-visible + span {
+      outline: 3px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    .checkbox-option {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: var(--space-2);
+      cursor: pointer;
+      font-weight: 400 !important;
+      color: var(--text) !important;
+      margin-bottom: 0 !important;
+      font-size: 0.88rem;
+    }
+    .checkbox-option input {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      accent-color: var(--navy);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Validation states */
+    .form-control.invalid,
+    .invalid .form-control {
+      border-color: var(--error);
+      box-shadow: 0 0 0 3px rgba(197, 34, 31, 0.1);
+    }
+    .radio-group.invalid,
+    .checkbox-option.invalid {
+      outline: 1.5px solid var(--error);
+      outline-offset: 4px;
+      border-radius: 6px;
+    }
+
+    .error-msg {
+      min-height: 1.2em;
+      font-size: 0.82rem;
+      color: var(--error);
+      margin-top: var(--space-1);
+    }
+
+    .form-submit {
+      grid-column: 1 / -1;
+      width: 100%;
+      margin-top: var(--space-2);
+    }
+
+    /* Success message (replaces a form) */
+    .form-success {
+      text-align: center;
+      padding: var(--space-6) var(--space-3);
+      animation: popIn 0.5s ease;
+    }
+    .form-success .success-icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto var(--space-4);
+      border-radius: 50%;
+      background: rgba(30, 142, 62, 0.1);
+      color: var(--success);
+      display: grid;
+      place-items: center;
+    }
+    .form-success h3 { font-size: 1.6rem; margin-bottom: var(--space-3); }
+    .form-success p { color: var(--muted); max-width: 420px; margin: 0 auto; }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* =========================================================
+       15. FOOTER
+       ========================================================= */
+    .site-footer {
+      background: var(--ink);
+      color: var(--on-dark-muted);
+      padding-top: var(--space-8);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+      padding-bottom: var(--space-7);
+    }
+
+    .footer-col h3 {
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-about p { margin: var(--space-4) 0 var(--space-5); font-size: 0.95rem; }
+
+    .footer-links li { margin-bottom: var(--space-2); }
+    .footer-links a {
+      font-size: 0.95rem;
+      transition: color var(--transition), padding-left var(--transition);
+    }
+    .footer-links a:hover {
+      color: var(--gold);
+      padding-left: 4px;
+    }
+
+    .social-links { display: flex; gap: var(--space-3); }
+    .social-links a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      transition: background var(--transition), color var(--transition), border-color var(--transition), transform var(--transition);
+    }
+    .social-links a:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--navy);
+      transform: translateY(-3px);
+    }
+
+    .newsletter p { font-size: 0.95rem; margin-bottom: var(--space-4); }
+    .newsletter-form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .newsletter-form input {
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--white);
+      transition: border-color var(--transition);
+    }
+    .newsletter-form input::placeholder { color: rgba(255, 255, 255, 0.5); }
+    .newsletter-form input:focus { outline: none; border-color: var(--gold); }
+    .newsletter-form input.invalid { border-color: #FF6B5E; }
+    .newsletter-form .btn { border-radius: var(--radius); padding: 0.8rem 1.2rem; }
+    .newsletter-msg { font-size: 0.85rem; min-height: 1.2em; }
+    .newsletter-msg.error { color: #FF8A80; }
+    .newsletter-msg.success { color: var(--gold-light); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding: var(--space-5) 0;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    .footer-bottom a { text-decoration: underline; }
+    .footer-bottom a:hover { color: var(--gold); }
+    .footer-bottom .disclaimer {
+      margin-top: var(--space-2);
+      font-size: 0.76rem;
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* =========================================================
+       16. MOBILE ACTION BAR + BACK TO TOP
+       ========================================================= */
+    .mobile-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 950;
+      height: var(--mobile-bar);
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      background: var(--white);
+      box-shadow: 0 -6px 20px rgba(11, 37, 69, 0.12);
+    }
+    .mobile-bar .btn { padding: 0.6rem 1rem; font-size: 0.95rem; }
+    .mobile-bar .btn-call { background: var(--bg); color: var(--navy); border-color: var(--border); }
+
+    .back-to-top {
+      position: fixed;
+      right: var(--space-4);
+      bottom: calc(var(--mobile-bar) + var(--space-3));
+      z-index: 900;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: none;
+      background: var(--gold);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: opacity var(--transition), visibility var(--transition), transform var(--transition), background var(--transition);
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+    .back-to-top:hover { background: var(--gold-light); transform: translateY(-3px); }
+
+    /* =========================================================
+       17. RESPONSIVE: TABLET (min-width: 768px)
+       ========================================================= */
+    @media (min-width: 768px) {
+      .container { padding: 0 var(--space-6); }
+
+      .hero-buttons { flex-direction: row; }
+      .stats { grid-template-columns: repeat(4, 1fr); }
+
+      .services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+      .snapshot-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .insights { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+      .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+      .carousel-slide { flex-basis: 50%; }
+
+      .guide-grid { grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-7); }
+      .guide-cover { display: flex; }
+
+      .form-card { padding: var(--space-7) var(--space-6); }
+      .form-grid { grid-template-columns: 1fr 1fr; }
+
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .newsletter-form { flex-direction: row; flex-wrap: wrap; }
+      .newsletter-form input { flex: 1 1 180px; }
+      .newsletter-msg { flex-basis: 100%; }
+    }
+
+    /* =========================================================
+       18. RESPONSIVE: DESKTOP (min-width: 1024px)
+       ========================================================= */
+    @media (min-width: 1024px) {
+      body { padding-bottom: 0; }
+      .section { padding: 6rem 0; }
+
+      /* Desktop-style inline nav */
+      .nav-toggle { display: none; }
+      .nav-menu {
+        position: static;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-5);
+        max-height: none;
+        overflow: visible;
+        padding: 0;
+        background: none;
+        box-shadow: none;
+      }
+      .nav-menu.open { padding: 0; }
+      .nav-link { padding: var(--space-2) 0; font-size: 0.95rem; }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 0;
+        height: 2px;
+        background: var(--gold);
+        transition: width var(--transition);
+      }
+      .nav-link:hover::after { width: 100%; }
+      .nav-phone { display: inline-flex; }
+      .nav-cta { margin-top: 0; padding: 0.6rem 1.3rem; font-size: 0.92rem; }
+
+      .hero { padding: var(--space-8) 0; }
+      .hero-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--space-8); }
+
+      .services-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+      .markets-grid { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); }
+
+      .calc-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--space-7); align-items: start; }
+
+      .carousel-slide { flex-basis: calc(100% / 3); }
+
+      .contact-grid {
+        grid-template-columns: 2fr 3fr;
+        gap: var(--space-7);
+        align-items: start;
+      }
+      .contact-info { position: sticky; top: calc(var(--nav-height) + var(--space-5)); }
+
+      .footer-grid { grid-template-columns: 1.4fr 1fr 1fr 1.5fr; gap: var(--space-7); }
+
+      .mobile-bar { display: none; }
+      .back-to-top { bottom: var(--space-5); right: var(--space-5); }
+    }
+
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .fade-in { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- =========================================================
+       ANNOUNCEMENT BAR
+       ========================================================= -->
+  <div class="announce" id="announce">
+    <div class="container">
+      <p><strong>Rates are up again:</strong> the RBA lifted the cash rate to 4.60% on 29 Sep 2026. <a href="#contact" data-interest="Mortgage &amp; Debt Strategy">Book a free rate-rise review</a></p>
+      <button class="announce-close" id="announce-close" aria-label="Dismiss announcement">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       HEADER / NAVIGATION
+       ========================================================= -->
+  <header class="site-header" id="site-header">
+    <nav class="container nav" aria-label="Main navigation">
+      <a href="#home" class="logo" aria-label="Horizon Wealth Planning – home">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+          <circle cx="17" cy="17" r="16" fill="none" stroke="#C9A227" stroke-width="2"/>
+          <path d="M6 22h22" stroke="#C9A227" stroke-width="2" stroke-linecap="round"/>
+          <path d="M10 22a7 7 0 0 1 14 0" fill="#C9A227"/>
+        </svg>
+        Horizon <span>Wealth</span>
+      </a>
+
+      <button class="nav-toggle" id="nav-toggle" aria-controls="nav-menu" aria-expanded="false" aria-label="Open menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#markets" class="nav-link">Markets</a></li>
+        <li><a href="#calculator" class="nav-link">Calculator</a></li>
+        <li><a href="#testimonials" class="nav-link">Reviews</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+        <li>
+          <a href="tel:+61290001234" class="nav-phone">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            02 9000 1234
+          </a>
+        </li>
+        <li><a href="#contact" class="btn btn-gold nav-cta">Book Free Consultation</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- =========================================================
+         HERO SECTION + QUICK-START FORM
+         ========================================================= -->
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <span class="eyebrow fade-in">Independent Financial Planning · Sydney</span>
+            <h1 id="hero-title" class="fade-in">Clear advice for <em>uncertain markets.</em></h1>
+            <p class="hero-sub fade-in">
+              With rates at a 15-year high and markets near record levels, the right plan matters more than ever. We build personalised retirement, investment and protection strategies, explained in plain English.
+            </p>
+            <div class="hero-buttons fade-in">
+              <a href="#contact" class="btn btn-gold">Book a Free 30-Min Consultation</a>
+              <a href="#calculator" class="btn btn-outline">Try the Retirement Calculator</a>
+            </div>
+            <ul class="trust-list fade-in" aria-label="Why clients choose us">
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>No-obligation first meeting</li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Fixed, transparent fees</li>
+              <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>No product commissions</li>
+            </ul>
+          </div>
+
+          <!-- Quick-start lead form: hands off to the full enquiry form -->
+          <div class="quick-card fade-in" id="quick-card">
+            <h2>Get your free plan review</h2>
+            <p>Takes 30 seconds. A planner replies within one business day.</p>
+            <form id="quick-form" novalidate aria-label="Quick start form">
+              <div class="form-group">
+                <label for="q-name">First name</label>
+                <input type="text" id="q-name" name="qName" class="form-control" autocomplete="given-name" placeholder="e.g. Jane" aria-describedby="q-name-error">
+                <span class="error-msg" id="q-name-error" aria-live="polite"></span>
+              </div>
+              <div class="form-group">
+                <label for="q-email">Email</label>
+                <input type="email" id="q-email" name="qEmail" class="form-control" autocomplete="email" placeholder="you@example.com" aria-describedby="q-email-error">
+                <span class="error-msg" id="q-email-error" aria-live="polite"></span>
+              </div>
+              <div class="form-group">
+                <label for="q-goal">What's your main goal?</label>
+                <select id="q-goal" name="qGoal" class="form-control" aria-describedby="q-goal-error">
+                  <option value="">Choose a goal</option>
+                  <option value="Retirement Planning">Retire comfortably</option>
+                  <option value="Investment">Grow my investments</option>
+                  <option value="Mortgage &amp; Debt Strategy">Manage rising mortgage rates</option>
+                  <option value="Insurance">Protect my family</option>
+                  <option value="Tax Planning">Pay less tax</option>
+                  <option value="Estate Planning">Plan my estate</option>
+                </select>
+                <span class="error-msg" id="q-goal-error" aria-live="polite"></span>
+              </div>
+              <button type="submit" class="btn btn-navy btn-block">Continue
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+              <p class="quick-note">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Your details stay private. No spam, ever.
+              </p>
+            </form>
+          </div>
+        </div>
+
+        <!-- Trust stats (numbers animate when in view) -->
+        <ul class="stats fade-in" aria-label="Key figures">
+          <li class="stat">
+            <div class="stat-number" data-target="15" data-suffix="+" aria-label="15+">0+</div>
+            <div class="stat-label">Years Experience</div>
+          </li>
+          <li class="stat">
+            <div class="stat-number" data-target="1200" data-suffix="+" aria-label="1,200+">0+</div>
+            <div class="stat-label">Families Advised</div>
+          </li>
+          <li class="stat">
+            <div class="stat-number" data-target="500" data-prefix="$" data-suffix="M" aria-label="$500M">$0M</div>
+            <div class="stat-label">Assets Advised</div>
+          </li>
+          <li class="stat">
+            <div class="stat-number" data-target="98" data-suffix="%" aria-label="98%">0%</div>
+            <div class="stat-label">Client Retention</div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         LIVE MARKET TICKER
+         ========================================================= -->
+    <section class="ticker" aria-label="Live market ticker">
+      <div class="container">
+        <span class="ticker-label"><span class="live-dot" id="live-dot" aria-hidden="true"></span><span id="ticker-status">Live</span></span>
+        <div class="ticker-viewport" tabindex="0" aria-label="Market prices, scrollable">
+          <ul class="ticker-list" id="ticker-list">
+            <li class="ticker-item"><span class="sym">Loading market data…</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SERVICES SECTION
+         ========================================================= -->
+    <section class="section" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <div class="section-header fade-in">
+          <span class="eyebrow">What We Do</span>
+          <h2 class="section-title" id="services-title">Advice for Every Stage of Life</h2>
+          <p class="section-subtitle">Whether you're starting out, building wealth or preparing to retire, we bring every part of your financial life into one clear plan.</p>
+        </div>
+
+        <div class="services-grid">
+          <article class="service-card fade-in">
+            <div class="service-media">
+              <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=70" alt="Person reviewing a financial dashboard on a laptop" width="800" height="450" loading="lazy">
+              <span class="service-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+            </div>
+            <div class="service-body">
+              <h3>Retirement Planning</h3>
+              <p>Know exactly when you can retire and how much you'll have to live on.</p>
+              <ul class="service-ticks">
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Super contribution strategies</li>
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Retirement income &amp; Age Pension</li>
+              </ul>
+              <a href="#contact" class="text-link" data-interest="Retirement Planning">Plan my retirement <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="service-card fade-in">
+            <div class="service-media">
+              <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=70" alt="Stock market charts on a trading screen" width="800" height="450" loading="lazy">
+              <span class="service-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></span>
+            </div>
+            <div class="service-body">
+              <h3>Investment Management</h3>
+              <p>Diversified, low-cost portfolios built around your goals and risk comfort.</p>
+              <ul class="service-ticks">
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Quarterly rebalancing &amp; reviews</li>
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>ETF, shares &amp; managed funds</li>
+              </ul>
+              <a href="#contact" class="text-link" data-interest="Investment">Grow my wealth <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="service-card fade-in">
+            <div class="service-media">
+              <img src="https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?auto=format&fit=crop&w=800&q=70" alt="Model house and magnifying glass on building plans" width="800" height="450" loading="lazy">
+              <span class="service-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>
+            </div>
+            <div class="service-body">
+              <h3>Mortgage &amp; Debt Strategy</h3>
+              <p>Rates have risen four times this year. We'll help you restructure and pay it down faster.</p>
+              <ul class="service-ticks">
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Repayment &amp; offset strategies</li>
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Rate-rise stress testing</li>
+              </ul>
+              <a href="#contact" class="text-link" data-interest="Mortgage &amp; Debt Strategy">Review my mortgage <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="service-card fade-in">
+            <div class="service-media">
+              <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=70" alt="Family holding hands on a beach at sunset" width="800" height="450" loading="lazy">
+              <span class="service-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+            </div>
+            <div class="service-body">
+              <h3>Insurance &amp; Protection</h3>
+              <p>The right life, TPD, trauma and income cover, without paying for what you don't need.</p>
+              <ul class="service-ticks">
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Independent cover comparison</li>
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Claims support when it matters</li>
+              </ul>
+              <a href="#contact" class="text-link" data-interest="Insurance">Protect my family <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="service-card fade-in">
+            <div class="service-media">
+              <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=70" alt="Calculator and financial documents on a desk" width="800" height="450" loading="lazy">
+              <span class="service-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h3M8 18h3M15 14v4"/></svg></span>
+            </div>
+            <div class="service-body">
+              <h3>Tax Planning</h3>
+              <p>Legally reduce what you pay through smart structures, timing and super.</p>
+              <ul class="service-ticks">
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>End-of-financial-year planning</li>
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Works alongside your accountant</li>
+              </ul>
+              <a href="#contact" class="text-link" data-interest="Tax Planning">Reduce my tax <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="service-card fade-in">
+            <div class="service-media">
+              <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=70" alt="Two people shaking hands across a desk" width="800" height="450" loading="lazy">
+              <span class="service-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg></span>
+            </div>
+            <div class="service-body">
+              <h3>Estate Planning</h3>
+              <p>Make sure your wealth passes to the people you choose, smoothly and tax-effectively.</p>
+              <ul class="service-ticks">
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Wills, trusts &amp; super nominations</li>
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Intergenerational wealth transfer</li>
+              </ul>
+              <a href="#contact" class="text-link" data-interest="Estate Planning">Plan my estate <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         MARKET TRENDS SECTION
+         Snapshot cards are hand-updated (edit the values and the
+         "as of" date). FX and crypto load live from keyless APIs.
+         ========================================================= -->
+    <section class="section markets" id="markets" aria-labelledby="markets-title">
+      <div class="container">
+        <div class="section-header fade-in">
+          <span class="eyebrow">Market Trends</span>
+          <h2 class="section-title" id="markets-title">What's Moving Markets Now</h2>
+          <p class="section-subtitle">A plain-English view of the numbers that affect your mortgage, super and investments.</p>
+        </div>
+
+        <div class="snapshot-grid fade-in">
+          <div class="snap-card">
+            <div class="snap-label">RBA Cash Rate</div>
+            <div class="snap-value">4.60%</div>
+            <div class="snap-note"><span class="chg down">▲ 0.25%</span> on 29 Sep, 4th hike of 2026</div>
+          </div>
+          <div class="snap-card">
+            <div class="snap-label">Inflation (CPI)</div>
+            <div class="snap-value">4.0%</div>
+            <div class="snap-note">Annual, Aug. Target band is 2–3%</div>
+          </div>
+          <div class="snap-card">
+            <div class="snap-label">ASX 200</div>
+            <div class="snap-value">8,736</div>
+            <div class="snap-note"><span class="chg up">▲ 0.6%</span> on 6 Oct</div>
+          </div>
+          <div class="snap-card">
+            <div class="snap-label">S&amp;P 500</div>
+            <div class="snap-value">Record high</div>
+            <div class="snap-note"><span class="chg up">▲ ~10%</span> year to date</div>
+          </div>
+        </div>
+        <p class="data-note fade-in">Snapshot as of <time datetime="2026-10-06">6 October 2026</time>. Sources: RBA, ABS and published market closes. Currency and crypto figures below update live.</p>
+
+        <div class="markets-grid">
+          <!-- AUD exchange rate chart -->
+          <div class="panel fade-in">
+            <div class="panel-head">
+              <div>
+                <h3>Australian Dollar</h3>
+                <p class="panel-sub">90-day trend · European Central Bank reference rates</p>
+              </div>
+              <div class="seg" role="group" aria-label="Choose currency">
+                <button type="button" data-ccy="USD" aria-pressed="true">USD</button>
+                <button type="button" data-ccy="EUR" aria-pressed="false">EUR</button>
+                <button type="button" data-ccy="GBP" aria-pressed="false">GBP</button>
+                <button type="button" data-ccy="JPY" aria-pressed="false">JPY</button>
+              </div>
+            </div>
+            <div class="fx-figure" aria-live="polite">
+              <span class="fx-big" id="fx-big">–</span>
+              <span class="chg" id="fx-chg"></span>
+            </div>
+            <div class="chart-wrap" id="fx-chart">
+              <div class="chart-skeleton" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <!-- Crypto -->
+          <div class="panel fade-in">
+            <div class="panel-head">
+              <div>
+                <h3>Digital Assets</h3>
+                <p class="panel-sub">Price in AUD · 7-day trend</p>
+              </div>
+            </div>
+            <ul class="crypto-list" id="crypto-list">
+              <li class="chart-skeleton" style="height:96px" aria-hidden="true"></li>
+              <li class="chart-skeleton" style="height:96px" aria-hidden="true"></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="insights">
+          <article class="insight fade-in">
+            <h3>Mortgage holders</h3>
+            <p>Four hikes this year add up to around $350–$400 a month to repayments on a $600k loan. A repayment review can claw much of that back.</p>
+            <a href="#contact" class="text-link" data-interest="Mortgage &amp; Debt Strategy">Review my mortgage <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="insight fade-in">
+            <h3>Investors</h3>
+            <p>Shares are near record highs while cash rates climb. It's a good time to check your portfolio is still balanced to your risk level.</p>
+            <a href="#contact" class="text-link" data-interest="Investment">Get a portfolio check <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="insight fade-in">
+            <h3>Retirees &amp; savers</h3>
+            <p>Higher rates mean better returns on cash and term deposits, but inflation at 4% still erodes spending power.</p>
+            <a href="#contact" class="text-link" data-interest="Retirement Planning">Protect my income <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         RETIREMENT CALCULATOR SECTION
+         ========================================================= -->
+    <section class="section" id="calculator" aria-labelledby="calc-title">
+      <div class="container">
+        <div class="section-header fade-in">
+          <span class="eyebrow">Free Tool</span>
+          <h2 class="section-title" id="calc-title">How Much Will You Retire With?</h2>
+          <p class="section-subtitle">Move the sliders to see a projection of your savings at retirement. Then let a planner show you how to grow it.</p>
+        </div>
+
+        <div class="calc-grid">
+          <form class="panel fade-in" id="calc-form" aria-label="Retirement calculator inputs">
+            <div class="range-field">
+              <div class="range-top"><label for="calc-age">Current age</label><output for="calc-age" id="calc-age-out">35</output></div>
+              <input type="range" id="calc-age" min="18" max="70" step="1" value="35">
+            </div>
+            <div class="range-field">
+              <div class="range-top"><label for="calc-retire">Retirement age</label><output for="calc-retire" id="calc-retire-out">67</output></div>
+              <input type="range" id="calc-retire" min="45" max="75" step="1" value="67">
+            </div>
+            <div class="range-field">
+              <div class="range-top"><label for="calc-balance">Current savings &amp; super</label><output for="calc-balance" id="calc-balance-out">$120,000</output></div>
+              <input type="range" id="calc-balance" min="0" max="2000000" step="5000" value="120000">
+            </div>
+            <div class="range-field">
+              <div class="range-top"><label for="calc-monthly">Monthly contributions</label><output for="calc-monthly" id="calc-monthly-out">$1,200</output></div>
+              <input type="range" id="calc-monthly" min="0" max="10000" step="50" value="1200">
+            </div>
+            <div class="range-field">
+              <div class="range-top"><label for="calc-return">Expected annual return</label><output for="calc-return" id="calc-return-out">6.5%</output></div>
+              <input type="range" id="calc-return" min="2" max="10" step="0.5" value="6.5">
+            </div>
+          </form>
+
+          <div class="calc-result fade-in" aria-live="polite">
+            <span class="eyebrow">Projected balance at <span id="calc-at-age">67</span></span>
+            <div class="calc-total" id="calc-total">$0</div>
+            <p class="calc-sub" id="calc-sub">That's about $0 in today's dollars.</p>
+            <dl class="calc-breakdown">
+              <div><dt><span class="key key-contrib" aria-hidden="true"></span>You contribute</dt><dd id="calc-contrib">$0</dd></div>
+              <div><dt><span class="key key-growth" aria-hidden="true"></span>Investment growth</dt><dd id="calc-growth">$0</dd></div>
+            </dl>
+            <div class="calc-chart" id="calc-chart" aria-hidden="true"></div>
+            <a href="#contact" class="btn btn-gold btn-block" id="calc-cta" data-interest="Retirement Planning">Get a Personalised Retirement Plan</a>
+            <p class="calc-disclaimer">Estimate only. Assumes monthly compounding, constant returns and 3% inflation, before fees and tax. It isn't financial advice.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PROCESS SECTION
+         ========================================================= -->
+    <section class="section section-alt" id="process" aria-labelledby="process-title">
+      <div class="container">
+        <div class="section-header fade-in">
+          <span class="eyebrow">How It Works</span>
+          <h2 class="section-title" id="process-title">Three Simple Steps to a Clear Plan</h2>
+          <p class="section-subtitle">No jargon, no pressure, and no cost until you decide to go ahead.</p>
+        </div>
+        <ol class="steps">
+          <li class="step fade-in">
+            <h3>Free discovery call</h3>
+            <p>A relaxed 30-minute chat about where you are today and where you'd like to be.</p>
+            <p class="step-meta">30 minutes · Free</p>
+          </li>
+          <li class="step fade-in">
+            <h3>Your written strategy</h3>
+            <p>We model your options and present a clear plan with a fixed, upfront fee quote.</p>
+            <p class="step-meta">Within 2 weeks</p>
+          </li>
+          <li class="step fade-in">
+            <h3>Ongoing partnership</h3>
+            <p>We put the plan in place and review it regularly as markets and your life change.</p>
+            <p class="step-meta">Reviews every 6 months</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         TESTIMONIALS SECTION
+         ========================================================= -->
+    <section class="section testimonials" id="testimonials" aria-labelledby="testimonials-title">
+      <div class="container">
+        <div class="section-header fade-in">
+          <span class="eyebrow">Client Reviews</span>
+          <h2 class="section-title" id="testimonials-title">Trusted by Over 1,200 Families</h2>
+          <p class="section-subtitle">Real stories from people who now feel in control of their financial future.</p>
+          <div class="rating-summary"><div class="stars" role="img" aria-label="Rated 4.9 out of 5 stars"></div> 4.9 / 5 average rating</div>
+        </div>
+
+        <div class="carousel fade-in" id="carousel" role="region" aria-roledescription="carousel" aria-label="Client testimonials">
+          <div class="carousel-viewport">
+            <div class="carousel-track" id="carousel-track" aria-live="polite">
+
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 6">
+                <article class="testimonial-card">
+                  <div class="stars" role="img" aria-label="Rated 5 out of 5 stars"></div>
+                  <p class="testimonial-quote">"Horizon turned our vague retirement hopes into a clear, realistic plan. For the first time, we know exactly when we can stop working and how we'll get there."</p>
+                  <div class="client">
+                    <img src="https://i.pravatar.cc/120?img=12" alt="Portrait of David Mitchell" width="56" height="56" loading="lazy">
+                    <div>
+                      <div class="client-name">David Mitchell</div>
+                      <div class="client-role">Civil Engineer</div>
+                      <span class="client-tag">Retirement Planning</span>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 6">
+                <article class="testimonial-card">
+                  <div class="stars" role="img" aria-label="Rated 5 out of 5 stars"></div>
+                  <p class="testimonial-quote">"As a business owner, my finances were all over the place. Their team restructured my investments and insurance cover, and I sleep far better now."</p>
+                  <div class="client">
+                    <img src="https://i.pravatar.cc/120?img=47" alt="Portrait of Priya Sharma" width="56" height="56" loading="lazy">
+                    <div>
+                      <div class="client-name">Priya Sharma</div>
+                      <div class="client-role">Small Business Owner</div>
+                      <span class="client-tag">Investment &amp; Insurance</span>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 6">
+                <article class="testimonial-card">
+                  <div class="stars" role="img" aria-label="Rated 5 out of 5 stars"></div>
+                  <p class="testimonial-quote">"When rates kept rising, they restructured our home loan and offset account. We're now on track to be mortgage-free four years earlier."</p>
+                  <div class="client">
+                    <img src="https://i.pravatar.cc/120?img=33" alt="Portrait of James O'Connor" width="56" height="56" loading="lazy">
+                    <div>
+                      <div class="client-name">James O'Connor</div>
+                      <div class="client-role">Secondary School Teacher</div>
+                      <span class="client-tag">Mortgage Strategy</span>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 6">
+                <article class="testimonial-card">
+                  <div class="stars" role="img" aria-label="Rated 5 out of 5 stars"></div>
+                  <p class="testimonial-quote">"Their estate planning advice gave our whole family peace of mind. Everything is organised, documented and set up for the next generation."</p>
+                  <div class="client">
+                    <img src="https://i.pravatar.cc/120?img=45" alt="Portrait of Margaret Lee" width="56" height="56" loading="lazy">
+                    <div>
+                      <div class="client-name">Margaret Lee</div>
+                      <div class="client-role">Retired Pharmacist</div>
+                      <span class="client-tag">Estate Planning</span>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 6">
+                <article class="testimonial-card">
+                  <div class="stars" role="img" aria-label="Rated 5 out of 5 stars"></div>
+                  <p class="testimonial-quote">"I started investing in my late twenties with their guidance. The regular reviews keep me on track and my portfolio has grown steadily."</p>
+                  <div class="client">
+                    <img src="https://i.pravatar.cc/120?img=68" alt="Portrait of Daniel Wong" width="56" height="56" loading="lazy">
+                    <div>
+                      <div class="client-name">Daniel Wong</div>
+                      <div class="client-role">Software Developer</div>
+                      <span class="client-tag">Investment</span>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="6 of 6">
+                <article class="testimonial-card">
+                  <div class="stars" role="img" aria-label="Rated 5 out of 5 stars"></div>
+                  <p class="testimonial-quote">"Their tax planning strategies alone saved us thousands this year. Horizon is the best financial decision we've made as a couple."</p>
+                  <div class="client">
+                    <img src="https://i.pravatar.cc/120?img=44" alt="Portrait of Sophie Bennett" width="56" height="56" loading="lazy">
+                    <div>
+                      <div class="client-name">Sophie Bennett</div>
+                      <div class="client-role">Marketing Director</div>
+                      <span class="client-tag">Tax Planning</span>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="carousel-controls">
+            <button class="carousel-btn" id="carousel-prev" aria-label="Previous testimonial" aria-controls="carousel-track">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <div class="carousel-dots" id="carousel-dots" role="group" aria-label="Choose testimonial"></div>
+            <button class="carousel-btn" id="carousel-next" aria-label="Next testimonial" aria-controls="carousel-track">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         FREE GUIDE (LEAD MAGNET) SECTION
+         ========================================================= -->
+    <section class="section guide" id="guide" aria-labelledby="guide-title">
+      <div class="container">
+        <div class="guide-grid">
+          <div class="guide-cover fade-in" aria-hidden="true">
+            <span>Free Guide · 2026</span>
+            <strong>The Rate-Rise Survival Guide</strong>
+            <span>Horizon Wealth</span>
+          </div>
+          <div class="fade-in">
+            <span class="eyebrow">Free Download</span>
+            <h2 id="guide-title">The 2026 Rate-Rise Survival Guide</h2>
+            <p class="guide-lead">A 12-page guide for Australian households on staying ahead while rates and prices rise.</p>
+            <ul class="guide-points">
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>7 ways to cut your mortgage repayments</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Where to put cash when rates are high</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>A one-page household budget checklist</li>
+            </ul>
+          </div>
+          <div class="guide-card fade-in" id="guide-card">
+            <h3>Send me the free guide</h3>
+            <form id="guide-form" novalidate aria-label="Free guide download form">
+              <div class="form-group">
+                <label for="g-name">First name</label>
+                <input type="text" id="g-name" name="gName" class="form-control" autocomplete="given-name" aria-describedby="g-name-error">
+                <span class="error-msg" id="g-name-error" aria-live="polite"></span>
+              </div>
+              <div class="form-group">
+                <label for="g-email">Email</label>
+                <input type="email" id="g-email" name="gEmail" class="form-control" autocomplete="email" aria-describedby="g-email-error">
+                <span class="error-msg" id="g-email-error" aria-live="polite"></span>
+              </div>
+              <button type="submit" class="btn btn-gold btn-block">Email Me the Guide</button>
+              <p class="quick-note">Includes our monthly market update. Unsubscribe anytime.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         FAQ SECTION
+         ========================================================= -->
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-header fade-in">
+          <span class="eyebrow">FAQ</span>
+          <h2 class="section-title" id="faq-title">Questions, Answered</h2>
+        </div>
+        <div class="faq-list fade-in">
+          <details class="faq-item">
+            <summary>Is the first consultation really free?</summary>
+            <p>Yes. Your first 30-minute meeting is free and comes with no obligation. We'll only quote a fee if you'd like us to prepare a written strategy.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How do you charge for advice?</summary>
+            <p>We charge a fixed fee agreed upfront, never a percentage of your assets and never commissions from product providers. You'll know the cost before any work begins.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Do I need a lot of money to work with you?</summary>
+            <p>No. We help people at every stage, from first-home buyers and young professionals to retirees. Good advice early often makes the biggest difference.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Can we meet online?</summary>
+            <p>Absolutely. We meet clients in our Sydney office, by phone or by video call, whichever suits you best.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What should I prepare for the first meeting?</summary>
+            <p>Nothing formal. A rough idea of your income, savings, super, debts and goals is plenty. We'll guide you through the rest.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ENQUIRY / CONTACT SECTION
+         ========================================================= -->
+    <section class="section section-alt" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="section-header fade-in">
+          <span class="eyebrow">Free Consultation</span>
+          <h2 class="section-title" id="contact-title">Book Your Free Consultation</h2>
+          <p class="section-subtitle">Tell us a little about yourself and a certified planner will be in touch within one business day.</p>
+        </div>
+
+        <div class="contact-grid">
+          <!-- Contact information -->
+          <aside class="contact-info fade-in" aria-label="Contact information">
+            <h3>Prefer to talk now?</h3>
+            <p>Call, email or visit our office. We're happy to answer quick questions.</p>
+            <ul class="info-list">
+              <li class="info-item">
+                <span class="info-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </span>
+                <div>
+                  <div class="info-title">Phone</div>
+                  <div class="info-text"><a href="tel:+61290001234">+61 2 9000 1234</a></div>
+                </div>
+              </li>
+              <li class="info-item">
+                <span class="info-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+                </span>
+                <div>
+                  <div class="info-title">Email</div>
+                  <div class="info-text"><a href="mailto:hello@horizonwealth.example">hello@horizonwealth.example</a></div>
+                </div>
+              </li>
+              <li class="info-item">
+                <span class="info-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <div>
+                  <div class="info-title">Office</div>
+                  <address class="info-text">Level 12, 88 Harbour Street<br>Sydney NSW 2000, Australia</address>
+                </div>
+              </li>
+              <li class="info-item">
+                <span class="info-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                </span>
+                <div>
+                  <div class="info-title">Office Hours</div>
+                  <div class="info-text">Mon – Fri: 9:00 AM – 5:30 PM<br>Sat: 10:00 AM – 1:00 PM (by appointment)</div>
+                </div>
+              </li>
+            </ul>
+            <ul class="promise">
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Reply within one business day</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Your details are never shared or sold</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>No obligation to proceed</li>
+            </ul>
+          </aside>
+
+          <!-- Enquiry form -->
+          <div class="form-card fade-in" id="form-card">
+            <div class="form-progress" aria-hidden="true">
+              <div class="form-progress-bar"><span id="form-progress-fill"></span></div>
+              <span id="form-progress-text">0% complete</span>
+            </div>
+            <p class="prefill-note" id="prefill-note" role="status"></p>
+            <form id="enquiry-form" novalidate aria-label="Enquiry form">
+              <div class="form-grid">
+                <div class="form-group full">
+                  <label for="fullName">Full Name <span class="required" aria-hidden="true">*</span></label>
+                  <input type="text" id="fullName" name="fullName" class="form-control" autocomplete="name" placeholder="e.g. Jane Smith" required aria-required="true" aria-describedby="fullName-error">
+                  <span class="error-msg" id="fullName-error" aria-live="polite"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="email">Email <span class="required" aria-hidden="true">*</span></label>
+                  <input type="email" id="email" name="email" class="form-control" autocomplete="email" placeholder="you@example.com" required aria-required="true" aria-describedby="email-error">
+                  <span class="error-msg" id="email-error" aria-live="polite"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="phone">Phone <span class="required" aria-hidden="true">*</span></label>
+                  <input type="tel" id="phone" name="phone" class="form-control" autocomplete="tel" inputmode="tel" placeholder="e.g. 0412 345 678" required aria-required="true" aria-describedby="phone-error">
+                  <span class="error-msg" id="phone-error" aria-live="polite"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="interest">I'd like help with <span class="required" aria-hidden="true">*</span></label>
+                  <select id="interest" name="interest" class="form-control" required aria-required="true" aria-describedby="interest-error">
+                    <option value="">Select a service</option>
+                    <option value="Retirement Planning">Retirement Planning</option>
+                    <option value="Investment">Investment</option>
+                    <option value="Mortgage &amp; Debt Strategy">Mortgage &amp; Debt Strategy</option>
+                    <option value="Insurance">Insurance</option>
+                    <option value="Tax Planning">Tax Planning</option>
+                    <option value="Estate Planning">Estate Planning</option>
+                    <option value="Not sure yet">Not sure yet</option>
+                  </select>
+                  <span class="error-msg" id="interest-error" aria-live="polite"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="bestTime">Best time to call <span class="optional">(optional)</span></label>
+                  <select id="bestTime" name="bestTime" class="form-control">
+                    <option value="Any time">Any time</option>
+                    <option value="Morning">Morning (9am – 12pm)</option>
+                    <option value="Afternoon">Afternoon (12pm – 5pm)</option>
+                    <option value="Evening">After 5pm</option>
+                  </select>
+                </div>
+
+                <fieldset class="form-group full">
+                  <legend>Preferred Contact Method <span class="required" aria-hidden="true">*</span></legend>
+                  <div class="radio-group" id="contactMethod-group" aria-describedby="contactMethod-error">
+                    <label class="radio-option"><input type="radio" name="contactMethod" value="Phone" required><span>Phone call</span></label>
+                    <label class="radio-option"><input type="radio" name="contactMethod" value="Email"><span>Email</span></label>
+                    <label class="radio-option"><input type="radio" name="contactMethod" value="Video"><span>Video call</span></label>
+                    <label class="radio-option"><input type="radio" name="contactMethod" value="WhatsApp"><span>WhatsApp</span></label>
+                  </div>
+                  <span class="error-msg" id="contactMethod-error" aria-live="polite"></span>
+                </fieldset>
+
+                <div class="form-group full">
+                  <label for="message">Anything we should know? <span class="optional">(optional)</span></label>
+                  <textarea id="message" name="message" class="form-control" rows="4" placeholder="Your goals, questions or current situation…"></textarea>
+                </div>
+
+                <div class="form-group full">
+                  <label class="checkbox-option" id="consent-label">
+                    <input type="checkbox" id="consent" name="consent" required aria-required="true" aria-describedby="consent-error">
+                    <span>I agree to be contacted by Horizon Wealth Planning about my enquiry and understand my details will be handled in line with the privacy policy. <span class="required" aria-hidden="true">*</span></span>
+                  </label>
+                  <span class="error-msg" id="consent-error" aria-live="polite"></span>
+                </div>
+
+                <button type="submit" class="btn btn-teal form-submit" id="submit-btn">
+                  <span class="spinner" aria-hidden="true"></span>
+                  <span class="btn-text">Book My Free Consultation</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Column 1: Logo + description + socials -->
+        <div class="footer-col footer-about">
+          <a href="#home" class="logo" aria-label="Horizon Wealth Planning – back to home">
+            <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+              <circle cx="17" cy="17" r="16" fill="none" stroke="#C9A227" stroke-width="2"/>
+              <path d="M6 22h22" stroke="#C9A227" stroke-width="2" stroke-linecap="round"/>
+              <path d="M10 22a7 7 0 0 1 14 0" fill="#C9A227"/>
+            </svg>
+            Horizon <span>Wealth</span>
+          </a>
+          <p>Independent, fee-transparent financial planners helping individuals and families build wealth, protect what matters and retire with confidence.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Horizon Wealth Planning on Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.33-.04-1.57-.14-2.88-.14C11.9 2 10 3.66 10 6.7v2.8H7v4h3V22h4z"/></svg>
+            </a>
+            <a href="#" aria-label="Horizon Wealth Planning on LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg>
+            </a>
+            <a href="#" aria-label="Horizon Wealth Planning on Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"/></svg>
+            </a>
+            <a href="#" aria-label="Horizon Wealth Planning on X">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Column 2: Quick links -->
+        <nav class="footer-col" aria-label="Footer quick links">
+          <h3>Explore</h3>
+          <ul class="footer-links">
+            <li><a href="#markets">Market Trends</a></li>
+            <li><a href="#calculator">Retirement Calculator</a></li>
+            <li><a href="#guide">Free Rate-Rise Guide</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact">Book a Consultation</a></li>
+          </ul>
+        </nav>
+
+        <!-- Column 3: Services -->
+        <div class="footer-col">
+          <h3>Services</h3>
+          <ul class="footer-links">
+            <li><a href="#contact" data-interest="Retirement Planning">Retirement Planning</a></li>
+            <li><a href="#contact" data-interest="Investment">Investment Management</a></li>
+            <li><a href="#contact" data-interest="Mortgage &amp; Debt Strategy">Mortgage &amp; Debt Strategy</a></li>
+            <li><a href="#contact" data-interest="Insurance">Insurance &amp; Protection</a></li>
+            <li><a href="#contact" data-interest="Tax Planning">Tax Planning</a></li>
+            <li><a href="#contact" data-interest="Estate Planning">Estate Planning</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Newsletter -->
+        <div class="footer-col newsletter">
+          <h3>Market Update</h3>
+          <p>A short monthly email on markets, rates and what they mean for you.</p>
+          <form class="newsletter-form" id="newsletter-form" novalidate>
+            <label for="newsletter-email" class="visually-hidden">Email address</label>
+            <input type="email" id="newsletter-email" name="newsletterEmail" placeholder="Your email address" autocomplete="email" aria-describedby="newsletter-msg">
+            <button type="submit" class="btn btn-gold">Subscribe</button>
+            <p class="newsletter-msg" id="newsletter-msg" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; <span id="year"></span> Horizon Wealth Planning. All rights reserved. · <a href="../index.html">View classic site</a></p>
+        <p class="disclaimer">This website provides general information only and does not take into account your objectives, financial situation or needs. It is not financial advice. Market data is indicative, may be delayed and is provided by third parties without warranty. Past performance is not a reliable indicator of future performance.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile action bar (hidden on desktop) -->
+  <div class="mobile-bar" aria-label="Quick actions">
+    <a href="tel:+61290001234" class="btn btn-call">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Call
+    </a>
+    <a href="#contact" class="btn btn-gold">Book Free Consultation</a>
+  </div>
+
+  <!-- Back to top button -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      const SVG_NS = 'http://www.w3.org/2000/svg';
+
+      const fmtAUD = n => '$' + Math.round(n).toLocaleString('en-AU');
+
+      function svgEl(tag, attrs) {
+        const el = document.createElementNS(SVG_NS, tag);
+        Object.keys(attrs || {}).forEach(k => el.setAttribute(k, attrs[k]));
+        return el;
+      }
+
+      function setFieldError(input, errorEl, message) {
+        input.classList.toggle('invalid', !!message);
+        errorEl.textContent = message;
+        if (message) input.setAttribute('aria-invalid', 'true');
+        else input.removeAttribute('aria-invalid');
+      }
+
+      function successPanel(title, body) {
+        const success = document.createElement('div');
+        success.className = 'form-success';
+        success.setAttribute('role', 'status');
+        success.setAttribute('tabindex', '-1');
+        success.innerHTML =
+          '<div class="success-icon" aria-hidden="true">' +
+            '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>' +
+          '</div><h3></h3><p></p>';
+        // textContent prevents any HTML in user input from being rendered
+        success.querySelector('h3').textContent = title;
+        success.querySelector('p').textContent = body;
+        return success;
+      }
+
+      /* =========================================================
+         1. ANNOUNCEMENT BAR + MOBILE NAVIGATION
+         ========================================================= */
+      const announce = document.getElementById('announce');
+      try {
+        if (localStorage.getItem('hw-announce-dismissed') === '1') announce.hidden = true;
+      } catch (e) { /* storage unavailable: keep the bar visible */ }
+      document.getElementById('announce-close').addEventListener('click', () => {
+        announce.hidden = true;
+        try { localStorage.setItem('hw-announce-dismissed', '1'); } catch (e) { /* ignore */ }
+      });
+
+      const navToggle = document.getElementById('nav-toggle');
+      const navMenu = document.getElementById('nav-menu');
+
+      function setMenu(open) {
+        navMenu.classList.toggle('open', open);
+        navToggle.setAttribute('aria-expanded', String(open));
+        navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      }
+
+      navToggle.addEventListener('click', () => {
+        setMenu(navToggle.getAttribute('aria-expanded') !== 'true');
+      });
+
+      // Close the menu after choosing a link
+      navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => setMenu(false));
+      });
+
+      // Close with Escape and return focus to the toggle
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && navMenu.classList.contains('open')) {
+          setMenu(false);
+          navToggle.focus();
+        }
+      });
+
+      /* =========================================================
+         2. SCROLL EFFECTS (header shadow + back-to-top button)
+         ========================================================= */
+      const header = document.getElementById('site-header');
+      const backToTop = document.getElementById('back-to-top');
+
+      function onScroll() {
+        const y = window.scrollY;
+        header.classList.toggle('scrolled', y > 10);
+        backToTop.classList.toggle('visible', y > 400);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      });
+
+      /* =========================================================
+         3. FADE-IN ON SCROLL (IntersectionObserver)
+         ========================================================= */
+      const fadeEls = document.querySelectorAll('.fade-in');
+      if ('IntersectionObserver' in window) {
+        const fadeObserver = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        fadeEls.forEach(el => fadeObserver.observe(el));
+      } else {
+        fadeEls.forEach(el => el.classList.add('is-visible'));
+      }
+
+      /* =========================================================
+         4. ANIMATED STAT COUNTERS
+         ========================================================= */
+      const statEls = document.querySelectorAll('.stat-number');
+
+      function formatStat(el, value) {
+        const prefix = el.dataset.prefix || '';
+        const suffix = el.dataset.suffix || '';
+        return prefix + Math.round(value).toLocaleString('en-US') + suffix;
+      }
+
+      function animateCount(el) {
+        const target = Number(el.dataset.target);
+        const duration = 2000;
+        if (reduceMotion) {
+          el.textContent = formatStat(el, target);
+          return;
+        }
+        const start = performance.now();
+        const easeOutQuad = t => t * (2 - t);
+        function tick(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          el.textContent = formatStat(el, target * easeOutQuad(progress));
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+
+      if ('IntersectionObserver' in window) {
+        const statObserver = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              animateCount(entry.target);
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.5 });
+        statEls.forEach(el => statObserver.observe(el));
+      } else {
+        statEls.forEach(el => { el.textContent = formatStat(el, Number(el.dataset.target)); });
+      }
+
+      /* =========================================================
+         5. LIVE MARKET DATA (ticker, AUD chart, crypto)
+         Frankfurter (ECB rates) and CoinGecko need no API key.
+         FALLBACK values are shown if either request fails.
+         ========================================================= */
+      const FX_CCYS = ['USD', 'EUR', 'GBP', 'JPY'];
+      const FALLBACK = {
+        asOf: '6 Oct 2026',
+        fx: { USD: 0.6982, EUR: 0.6196, GBP: 0.5259, JPY: 110.38 },
+        crypto: [
+          { name: 'Bitcoin', symbol: 'btc', current_price: 120870, price_change_percentage_24h: -1.31 },
+          { name: 'Ethereum', symbol: 'eth', current_price: 3757, price_change_percentage_24h: -3.0 }
+        ]
+      };
+
+      const tickerList = document.getElementById('ticker-list');
+      const liveDot = document.getElementById('live-dot');
+      const tickerStatus = document.getElementById('ticker-status');
+      const fxChart = document.getElementById('fx-chart');
+      const fxBig = document.getElementById('fx-big');
+      const fxChg = document.getElementById('fx-chg');
+      const cryptoList = document.getElementById('crypto-list');
+
+      const tickerItems = { fx: [], crypto: [] };
+      let fxSeries = null;   // { dates: [], rates: { USD: [], ... } }
+      let fxCcy = 'USD';
+
+      function fetchJSON(url) {
+        const ctrl = 'AbortController' in window ? new AbortController() : null;
+        const timer = ctrl ? setTimeout(() => ctrl.abort(), 10000) : null;
+        return fetch(url, ctrl ? { signal: ctrl.signal } : {}).then(res => {
+          clearTimeout(timer);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        });
+      }
+
+      function pct(now, before) { return before ? ((now - before) / before) * 100 : 0; }
+      function fxDigits(ccy) { return ccy === 'JPY' ? 2 : 4; }
+
+      function chgSpan(change, digits) {
+        const span = document.createElement('span');
+        const dir = change > 0.0001 ? 'up' : change < -0.0001 ? 'down' : 'flat';
+        span.className = 'chg ' + dir;
+        span.textContent = (dir === 'up' ? '▲ ' : dir === 'down' ? '▼ ' : '') + Math.abs(change).toFixed(digits == null ? 2 : digits) + '%';
+        return span;
+      }
+
+      function renderTicker() {
+        const items = tickerItems.fx.concat(tickerItems.crypto);
+        if (!items.length) return;
+        tickerList.replaceChildren();
+        items.forEach(item => {
+          const li = document.createElement('li');
+          li.className = 'ticker-item';
+          const sym = document.createElement('span');
+          sym.className = 'sym';
+          sym.textContent = item.sym;
+          const val = document.createElement('span');
+          val.className = 'val';
+          val.textContent = item.val;
+          li.append(sym, val);
+          if (item.chg != null) li.append(chgSpan(item.chg));
+          tickerList.appendChild(li);
+        });
+      }
+
+      function setLive(isLive) {
+        liveDot.classList.toggle('offline', !isLive);
+        tickerStatus.textContent = isLive ? 'Live' : 'As of ' + FALLBACK.asOf;
+      }
+
+      // Line chart with a gradient area and a hover/touch readout
+      function drawLineChart(container, labels, values, opts) {
+        const W = 640, H = 240, padL = 8, padR = 52, padT = 16, padB = 26;
+        const min = Math.min.apply(null, values);
+        const max = Math.max.apply(null, values);
+        const span = (max - min) || 1;
+        const x = i => padL + (i / (values.length - 1)) * (W - padL - padR);
+        const y = v => padT + (1 - (v - min) / span) * (H - padT - padB);
+        const up = values[values.length - 1] >= values[0];
+        const color = up ? 'var(--up)' : 'var(--down)';
+        const gid = 'g' + Math.random().toString(36).slice(2, 8);
+
+        const svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': opts.label });
+        const defs = svgEl('defs');
+        const grad = svgEl('linearGradient', { id: gid, x1: 0, y1: 0, x2: 0, y2: 1 });
+        grad.append(svgEl('stop', { offset: '0%', 'stop-color': up ? '#15803D' : '#B42318', 'stop-opacity': 0.18 }));
+        grad.append(svgEl('stop', { offset: '100%', 'stop-color': up ? '#15803D' : '#B42318', 'stop-opacity': 0 }));
+        defs.append(grad);
+        svg.append(defs);
+
+        // Gridlines with value labels on the right
+        for (let i = 0; i <= 3; i++) {
+          const v = min + (span * i) / 3;
+          svg.append(svgEl('line', { class: 'chart-grid', x1: padL, x2: W - padR, y1: y(v), y2: y(v) }));
+          const t = svgEl('text', { class: 'chart-axis', x: W - padR + 8, y: y(v) + 4 });
+          t.textContent = opts.format(v);
+          svg.append(t);
+        }
+        // First and last date labels
+        [[0, 'start'], [labels.length - 1, 'end']].forEach(([i, anchor]) => {
+          const t = svgEl('text', { class: 'chart-axis', x: x(i), y: H - 6, 'text-anchor': anchor });
+          t.textContent = opts.dateLabel(labels[i]);
+          svg.append(t);
+        });
+
+        const pts = values.map((v, i) => x(i).toFixed(1) + ',' + y(v).toFixed(1));
+        svg.append(svgEl('path', {
+          d: 'M' + pts.join(' L') + ' L' + x(values.length - 1) + ',' + (H - padB) + ' L' + x(0) + ',' + (H - padB) + 'Z',
+          fill: 'url(#' + gid + ')'
+        }));
+        svg.append(svgEl('polyline', { points: pts.join(' '), fill: 'none', stroke: color, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+
+        const guide = svgEl('line', { y1: padT, y2: H - padB, stroke: 'var(--muted)', 'stroke-dasharray': '3 3', opacity: 0 });
+        const dot = svgEl('circle', { r: 5, fill: color, stroke: '#fff', 'stroke-width': 2, opacity: 0 });
+        svg.append(guide, dot);
+
+        const tip = document.createElement('div');
+        tip.className = 'chart-tip';
+        container.replaceChildren(svg, tip);
+
+        function showAt(clientX) {
+          const rect = svg.getBoundingClientRect();
+          const sx = ((clientX - rect.left) / rect.width) * W;
+          const i = Math.max(0, Math.min(values.length - 1, Math.round(((sx - padL) / (W - padL - padR)) * (values.length - 1))));
+          guide.setAttribute('x1', x(i)); guide.setAttribute('x2', x(i)); guide.setAttribute('opacity', 1);
+          dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(values[i])); dot.setAttribute('opacity', 1);
+          tip.textContent = opts.dateLabel(labels[i]) + ' · ' + opts.format(values[i]);
+          tip.style.left = (x(i) / W) * 100 + '%';
+          tip.classList.add('show');
+        }
+        function hide() {
+          guide.setAttribute('opacity', 0); dot.setAttribute('opacity', 0);
+          tip.classList.remove('show');
+        }
+        svg.addEventListener('pointermove', e => showAt(e.clientX));
+        svg.addEventListener('pointerleave', hide);
+      }
+
+      function sparkline(values, up) {
+        const W = 300, H = 44;
+        const min = Math.min.apply(null, values);
+        const span = (Math.max.apply(null, values) - min) || 1;
+        const pts = values.map((v, i) => ((i / (values.length - 1)) * W).toFixed(1) + ',' + (4 + (1 - (v - min) / span) * (H - 8)).toFixed(1));
+        const svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H, preserveAspectRatio: 'none', 'aria-hidden': 'true' });
+        svg.append(svgEl('polyline', { points: pts.join(' '), fill: 'none', stroke: up ? '#15803D' : '#B42318', 'stroke-width': 2, 'vector-effect': 'non-scaling-stroke' }));
+        return svg;
+      }
+
+      const shortDate = iso => new Date(iso + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+
+      function renderFx() {
+        if (!fxSeries) {
+          // Fallback: show the snapshot rate without a chart
+          fxBig.textContent = FALLBACK.fx[fxCcy].toFixed(fxDigits(fxCcy));
+          fxChg.replaceChildren();
+          const p = document.createElement('p');
+          p.className = 'panel-sub';
+          p.textContent = 'Live chart unavailable right now. Showing the rate as of ' + FALLBACK.asOf + '.';
+          fxChart.replaceChildren(p);
+          return;
+        }
+        const values = fxSeries.rates[fxCcy];
+        const first = values[0];
+        const last = values[values.length - 1];
+        fxBig.textContent = '1 AUD = ' + last.toFixed(fxDigits(fxCcy)) + ' ' + fxCcy;
+        fxChg.replaceChildren(chgSpan(pct(last, first)), document.createTextNode(' over 90 days'));
+        drawLineChart(fxChart, fxSeries.dates, values, {
+          label: 'AUD to ' + fxCcy + ' exchange rate over the last 90 days, from ' + first.toFixed(fxDigits(fxCcy)) + ' to ' + last.toFixed(fxDigits(fxCcy)),
+          format: v => v.toFixed(fxDigits(fxCcy)),
+          dateLabel: shortDate
+        });
+      }
+
+      document.querySelectorAll('.seg button[data-ccy]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          fxCcy = btn.dataset.ccy;
+          document.querySelectorAll('.seg button[data-ccy]').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+          renderFx();
+        });
+      });
+
+      function loadFx() {
+        const start = new Date(Date.now() - 90 * 864e5).toISOString().slice(0, 10);
+        return fetchJSON('https://api.frankfurter.dev/v1/' + start + '..?from=AUD&to=' + FX_CCYS.join(','))
+          .then(data => {
+            const dates = Object.keys(data.rates).sort();
+            if (dates.length < 2) throw new Error('Not enough FX data');
+            const rates = {};
+            FX_CCYS.forEach(c => { rates[c] = dates.map(d => data.rates[d][c]); });
+            fxSeries = { dates, rates };
+            tickerItems.fx = FX_CCYS.map(c => {
+              const arr = rates[c];
+              return { sym: 'AUD/' + c, val: arr[arr.length - 1].toFixed(fxDigits(c)), chg: pct(arr[arr.length - 1], arr[arr.length - 2]) };
+            });
+            return true;
+          })
+          .catch(() => {
+            tickerItems.fx = FX_CCYS.map(c => ({ sym: 'AUD/' + c, val: FALLBACK.fx[c].toFixed(fxDigits(c)), chg: null }));
+            return false;
+          })
+          .then(ok => { renderFx(); return ok; });
+      }
+
+      function renderCrypto(coins, live) {
+        cryptoList.replaceChildren();
+        coins.forEach(coin => {
+          const change = coin.price_change_percentage_24h || 0;
+          const li = document.createElement('li');
+          li.className = 'crypto-row';
+          const name = document.createElement('div');
+          name.className = 'crypto-name';
+          name.textContent = coin.name;
+          const small = document.createElement('small');
+          small.textContent = coin.symbol.toUpperCase() + ' / AUD';
+          name.append(small);
+          const price = document.createElement('div');
+          price.className = 'crypto-price';
+          price.textContent = fmtAUD(coin.current_price);
+          const c = chgSpan(change);
+          c.append(document.createTextNode(' 24h'));
+          price.append(c);
+          li.append(name, price);
+          const prices = coin.sparkline_in_7d && coin.sparkline_in_7d.price;
+          if (live && prices && prices.length > 1) {
+            const spark = document.createElement('div');
+            spark.className = 'crypto-spark';
+            spark.append(sparkline(prices, prices[prices.length - 1] >= prices[0]));
+            li.append(spark);
+          }
+          cryptoList.append(li);
+        });
+        if (!live) {
+          const note = document.createElement('li');
+          note.className = 'panel-sub';
+          note.textContent = 'Live prices unavailable right now. Showing prices as of ' + FALLBACK.asOf + '.';
+          cryptoList.append(note);
+        }
+        tickerItems.crypto = coins.map(coin => ({ sym: coin.symbol.toUpperCase(), val: fmtAUD(coin.current_price), chg: live ? coin.price_change_percentage_24h : null }));
+      }
+
+      function loadCrypto() {
+        return fetchJSON('https://api.coingecko.com/api/v3/coins/markets?vs_currency=aud&ids=bitcoin,ethereum&sparkline=true&price_change_percentage=24h')
+          .then(coins => {
+            if (!Array.isArray(coins) || !coins.length) throw new Error('No crypto data');
+            renderCrypto(coins, true);
+            return true;
+          })
+          .catch(() => { renderCrypto(FALLBACK.crypto, false); return false; });
+      }
+
+      function loadMarkets() {
+        Promise.all([loadFx(), loadCrypto()]).then(([fxOk, cryptoOk]) => {
+          setLive(fxOk || cryptoOk);
+          renderTicker();
+        });
+      }
+
+      // Load market data now, then refresh crypto every 2 minutes
+      loadMarkets();
+      setInterval(() => {
+        if (!document.hidden) loadCrypto().then(ok => { if (ok) { setLive(true); renderTicker(); } });
+      }, 120000);
+
+      /* =========================================================
+         6. RETIREMENT CALCULATOR
+         ========================================================= */
+      const calc = {
+        age: document.getElementById('calc-age'),
+        retire: document.getElementById('calc-retire'),
+        balance: document.getElementById('calc-balance'),
+        monthly: document.getElementById('calc-monthly'),
+        rate: document.getElementById('calc-return')
+      };
+      const INFLATION = 0.03;
+      const calcChart = document.getElementById('calc-chart');
+      let calcSummary = '';
+
+      function drawCalcChart(rows) {
+        const W = 520, H = 170, padB = 22, padT = 8;
+        const max = rows[rows.length - 1].total || 1;
+        const barW = W / rows.length;
+        const svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H });
+        rows.forEach((r, i) => {
+          const hTotal = (r.total / max) * (H - padB - padT);
+          const hContrib = (Math.min(r.contrib, r.total) / max) * (H - padB - padT);
+          const bx = i * barW + barW * 0.15;
+          const bw = barW * 0.7;
+          svg.append(svgEl('rect', { x: bx, y: H - padB - hTotal, width: bw, height: Math.max(hTotal - hContrib, 0), fill: '#C9A227', rx: 2 }));
+          svg.append(svgEl('rect', { x: bx, y: H - padB - hContrib, width: bw, height: hContrib, fill: 'rgba(255,255,255,0.55)', rx: 2 }));
+        });
+        [[0, 'start'], [rows.length - 1, 'end']].forEach(([i, anchor]) => {
+          const t = svgEl('text', { x: anchor === 'start' ? 0 : W, y: H - 4, 'text-anchor': anchor, fill: 'rgba(255,255,255,0.66)', 'font-size': 12 });
+          t.textContent = 'Age ' + rows[i].age;
+          svg.append(t);
+        });
+        calcChart.replaceChildren(svg);
+      }
+
+      function runCalc() {
+        let age = Number(calc.age.value);
+        let retire = Number(calc.retire.value);
+        // Keep retirement age after current age
+        if (retire <= age) {
+          retire = Math.min(age + 1, Number(calc.retire.max));
+          calc.retire.value = retire;
+          if (retire <= age) { age = retire - 1; calc.age.value = age; }
+        }
+        const balance = Number(calc.balance.value);
+        const monthly = Number(calc.monthly.value);
+        const annual = Number(calc.rate.value) / 100;
+        const r = annual / 12;
+        const years = retire - age;
+
+        document.getElementById('calc-age-out').textContent = age;
+        document.getElementById('calc-retire-out').textContent = retire;
+        document.getElementById('calc-balance-out').textContent = fmtAUD(balance);
+        document.getElementById('calc-monthly-out').textContent = fmtAUD(monthly);
+        document.getElementById('calc-return-out').textContent = annual * 100 + '%';
+
+        let total = balance;
+        let contrib = balance;
+        const rows = [];
+        for (let y = 1; y <= years; y++) {
+          for (let m = 0; m < 12; m++) {
+            total = total * (1 + r) + monthly;
+            contrib += monthly;
+          }
+          rows.push({ age: age + y, total, contrib });
+        }
+        if (!rows.length) rows.push({ age, total, contrib });
+
+        const real = total / Math.pow(1 + INFLATION, years);
+        document.getElementById('calc-at-age').textContent = retire;
+        document.getElementById('calc-total').textContent = fmtAUD(total);
+        document.getElementById('calc-sub').textContent = "That's about " + fmtAUD(real) + " in today's dollars, over " + years + ' year' + (years === 1 ? '' : 's') + '.';
+        document.getElementById('calc-contrib').textContent = fmtAUD(contrib);
+        document.getElementById('calc-growth').textContent = fmtAUD(Math.max(total - contrib, 0));
+        drawCalcChart(rows);
+
+        calcSummary = 'Calculator: age ' + age + ', retire at ' + retire + ', savings ' + fmtAUD(balance) +
+          ', ' + fmtAUD(monthly) + '/month, ' + (annual * 100) + '% return. Projected ' + fmtAUD(total) + '.';
+      }
+
+      Object.values(calc).forEach(input => input.addEventListener('input', runCalc));
+      runCalc();
+
+      /* =========================================================
+         7. TESTIMONIALS CAROUSEL
+         ========================================================= */
+      const carousel = document.getElementById('carousel');
+      const track = document.getElementById('carousel-track');
+      const slides = Array.from(track.children);
+      const dotsWrap = document.getElementById('carousel-dots');
+      const prevBtn = document.getElementById('carousel-prev');
+      const nextBtn = document.getElementById('carousel-next');
+      const AUTOPLAY_MS = 6000;
+
+      let index = 0;
+      let perView = getPerView();
+      let autoplayId = null;
+
+      // Fill each card with 5 star icons
+      const starSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>';
+      document.querySelectorAll('.stars').forEach(el => { el.innerHTML = starSvg.repeat(5); });
+
+      // 1 card on mobile, 2 on tablet, 3 on desktop (matches CSS breakpoints)
+      function getPerView() {
+        if (window.matchMedia('(min-width: 1024px)').matches) return 3;
+        if (window.matchMedia('(min-width: 768px)').matches) return 2;
+        return 1;
+      }
+
+      function maxIndex() {
+        return Math.max(slides.length - perView, 0);
+      }
+
+      function buildDots() {
+        dotsWrap.innerHTML = '';
+        for (let i = 0; i <= maxIndex(); i++) {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'carousel-dot';
+          dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
+          dot.addEventListener('click', () => { goTo(i); restartAutoplay(); });
+          dotsWrap.appendChild(dot);
+        }
+      }
+
+      function update() {
+        track.style.transform = 'translateX(-' + (index * (100 / perView)) + '%)';
+
+        // Hide off-screen slides from assistive tech and the tab order
+        slides.forEach((slide, i) => {
+          const visible = i >= index && i < index + perView;
+          slide.setAttribute('aria-hidden', String(!visible));
+          if ('inert' in slide) slide.inert = !visible;
+        });
+
+        Array.from(dotsWrap.children).forEach((dot, i) => {
+          if (i === index) dot.setAttribute('aria-current', 'true');
+          else dot.removeAttribute('aria-current');
+        });
+      }
+
+      function goTo(i) {
+        const max = maxIndex();
+        if (i > max) i = 0;          // wrap forward
+        if (i < 0) i = max;          // wrap backward
+        index = i;
+        update();
+      }
+
+      const next = () => goTo(index + 1);
+      const prev = () => goTo(index - 1);
+
+      function startAutoplay() {
+        if (reduceMotion || autoplayId) return;
+        autoplayId = setInterval(next, AUTOPLAY_MS);
+      }
+      function stopAutoplay() {
+        clearInterval(autoplayId);
+        autoplayId = null;
+      }
+      function restartAutoplay() {
+        stopAutoplay();
+        if (!carousel.matches(':hover') && !carousel.contains(document.activeElement)) startAutoplay();
+      }
+
+      nextBtn.addEventListener('click', () => { next(); restartAutoplay(); });
+      prevBtn.addEventListener('click', () => { prev(); restartAutoplay(); });
+
+      // Pause on hover and while keyboard focus is inside the carousel
+      carousel.addEventListener('mouseenter', stopAutoplay);
+      carousel.addEventListener('mouseleave', startAutoplay);
+      carousel.addEventListener('focusin', stopAutoplay);
+      carousel.addEventListener('focusout', e => {
+        if (!carousel.contains(e.relatedTarget)) startAutoplay();
+      });
+
+      // Arrow-key navigation
+      carousel.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') { next(); }
+        if (e.key === 'ArrowLeft') { prev(); }
+      });
+
+      // Swipe support on touch devices
+      let touchStartX = 0;
+      let touchStartY = 0;
+      const SWIPE_THRESHOLD = 50;
+
+      track.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].clientX;
+        touchStartY = e.changedTouches[0].clientY;
+        stopAutoplay();
+      }, { passive: true });
+
+      track.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+          dx < 0 ? next() : prev();
+        }
+        startAutoplay();
+      }, { passive: true });
+
+      // Recalculate layout when crossing a breakpoint
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          const newPerView = getPerView();
+          if (newPerView !== perView) {
+            perView = newPerView;
+            index = Math.min(index, maxIndex());
+            buildDots();
+            update();
+          }
+        }, 150);
+      });
+
+      // Pause when the tab is hidden
+      document.addEventListener('visibilitychange', () => {
+        document.hidden ? stopAutoplay() : restartAutoplay();
+      });
+
+      buildDots();
+      update();
+      startAutoplay();
+
+      /* =========================================================
+         8. ENQUIRY FORM: VALIDATION, PROGRESS, PREFILL, SUBMISSION
+         ========================================================= */
+      const form = document.getElementById('enquiry-form');
+      const formCard = document.getElementById('form-card');
+      const submitBtn = document.getElementById('submit-btn');
+      const prefillNote = document.getElementById('prefill-note');
+      const progressFill = document.getElementById('form-progress-fill');
+      const progressText = document.getElementById('form-progress-text');
+      let submitAttempted = false;
+      let leadSource = 'Direct';
+
+      // Each rule returns an error message, or '' when valid
+      const validators = {
+        fullName: () => {
+          const v = form.fullName.value.trim();
+          if (!v) return 'Please enter your full name.';
+          if (v.length < 2) return 'Name must be at least 2 characters.';
+          return '';
+        },
+        email: () => {
+          const v = form.email.value.trim();
+          if (!v) return 'Please enter your email address.';
+          if (!EMAIL_RE.test(v)) return 'Please enter a valid email address (e.g. name@example.com).';
+          return '';
+        },
+        phone: () => {
+          const v = form.phone.value.replace(/[\s()+-]/g, '');
+          if (!v) return 'Please enter your phone number.';
+          if (!/^\d+$/.test(v)) return 'Phone number can contain digits, spaces, +, - and brackets only.';
+          if (v.length < 8 || v.length > 15) return 'Phone number must be between 8 and 15 digits.';
+          return '';
+        },
+        interest: () => form.interest.value ? '' : 'Please choose what you would like help with.',
+        contactMethod: () => form.querySelector('input[name="contactMethod"]:checked') ? '' : 'Please choose a preferred contact method.',
+        consent: () => form.consent.checked ? '' : 'Please agree to be contacted so we can reply.'
+      };
+
+      // Which element receives the red "invalid" styling for each field
+      function getTarget(name) {
+        if (name === 'contactMethod') return document.getElementById('contactMethod-group');
+        if (name === 'consent') return document.getElementById('consent-label');
+        return form.elements[name];
+      }
+
+      function validateField(name) {
+        const message = validators[name]();
+        const target = getTarget(name);
+        const errorEl = document.getElementById(name + '-error');
+        const isValid = message === '';
+
+        target.classList.toggle('invalid', !isValid);
+        errorEl.textContent = message;
+
+        // aria-invalid on the actual input(s)
+        const inputs = name === 'contactMethod'
+          ? form.querySelectorAll('input[name="contactMethod"]')
+          : [form.elements[name]];
+        inputs.forEach(input => {
+          if (isValid) input.removeAttribute('aria-invalid');
+          else input.setAttribute('aria-invalid', 'true');
+        });
+
+        return isValid;
+      }
+
+      // Progress bar: share of required fields that are currently valid
+      function updateProgress() {
+        const names = Object.keys(validators);
+        const done = names.filter(n => validators[n]() === '').length;
+        const percent = Math.round((done / names.length) * 100);
+        progressFill.style.width = percent + '%';
+        progressText.textContent = percent + '% complete';
+      }
+
+      // Live validation: on blur, and on every change once the user has tried submitting
+      Object.keys(validators).forEach(name => {
+        const els = name === 'contactMethod'
+          ? form.querySelectorAll('input[name="contactMethod"]')
+          : [form.elements[name]];
+        els.forEach(el => {
+          el.addEventListener('blur', () => {
+            if (submitAttempted || el.value.trim() !== '') validateField(name);
+          });
+          el.addEventListener(el.tagName === 'SELECT' || el.type === 'radio' || el.type === 'checkbox' ? 'change' : 'input', () => {
+            if (submitAttempted) validateField(name);
+            updateProgress();
+          });
+        });
+      });
+
+      // Any link with data-interest preselects that service in the form
+      function preselectInterest(value, source) {
+        if (!value) return;
+        const option = Array.from(form.interest.options).find(o => o.value === value);
+        if (!option) return;
+        form.interest.value = value;
+        leadSource = source || leadSource;
+        if (submitAttempted) validateField('interest');
+        updateProgress();
+      }
+      document.querySelectorAll('a[data-interest]').forEach(link => {
+        link.addEventListener('click', () => {
+          preselectInterest(link.dataset.interest, link.id === 'calc-cta' ? 'Calculator' : 'Service link');
+          if (link.id === 'calc-cta' && !form.message.value.trim()) form.message.value = calcSummary;
+        });
+      });
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        submitAttempted = true;
+
+        const results = Object.keys(validators).map(name => ({ name, valid: validateField(name) }));
+        const firstInvalid = results.find(r => !r.valid);
+
+        if (firstInvalid) {
+          const el = firstInvalid.name === 'contactMethod'
+            ? form.querySelector('input[name="contactMethod"]')
+            : form.elements[firstInvalid.name];
+          el.focus();
+          return;
+        }
+
+        // Collect form data into a plain object
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => { data[key] = typeof value === 'string' ? value.trim() : value; });
+        data.consent = form.consent.checked;
+        data.leadSource = leadSource;
+        data.submittedAt = new Date().toISOString();
+
+        // Loading state for 1.5 seconds (simulated request)
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-busy', 'true');
+        submitBtn.querySelector('.btn-text').textContent = 'Sending…';
+
+        setTimeout(() => {
+          console.log('Enquiry submitted:', JSON.stringify(data, null, 2));
+          const success = successPanel(
+            'Thank you, ' + data.fullName.split(' ')[0] + '!',
+            'Your consultation request has been received. A financial planner will contact you by ' +
+              ({ Phone: 'phone', Email: 'email', Video: 'video call', WhatsApp: 'WhatsApp' })[data.contactMethod] + ' within one business day.'
+          );
+          formCard.replaceChildren(success);
+          success.focus();
+        }, 1500);
+      });
+
+      updateProgress();
+
+      /* =========================================================
+         9. QUICK-START FORM (hero) → hands off to the enquiry form
+         ========================================================= */
+      const quickForm = document.getElementById('quick-form');
+      const quickFields = {
+        qName: { input: document.getElementById('q-name'), error: document.getElementById('q-name-error'),
+          check: v => v.length >= 2 ? '' : 'Please enter your first name.' },
+        qEmail: { input: document.getElementById('q-email'), error: document.getElementById('q-email-error'),
+          check: v => EMAIL_RE.test(v) ? '' : 'Please enter a valid email address.' },
+        qGoal: { input: document.getElementById('q-goal'), error: document.getElementById('q-goal-error'),
+          check: v => v ? '' : 'Please choose a goal.' }
+      };
+
+      quickForm.addEventListener('submit', e => {
+        e.preventDefault();
+        let firstBad = null;
+        Object.values(quickFields).forEach(f => {
+          const msg = f.check(f.input.value.trim());
+          setFieldError(f.input, f.error, msg);
+          if (msg && !firstBad) firstBad = f.input;
+        });
+        if (firstBad) { firstBad.focus(); return; }
+
+        const name = quickFields.qName.input.value.trim();
+        form.fullName.value = name;
+        form.email.value = quickFields.qEmail.input.value.trim();
+        preselectInterest(quickFields.qGoal.input.value, 'Hero quick form');
+        console.log('Quick lead captured:', JSON.stringify({ name, email: form.email.value, goal: form.interest.value }));
+
+        prefillNote.textContent = 'Great start, ' + name + '! Just add your phone number and how you would like us to reach you.';
+        prefillNote.classList.add('show');
+        updateProgress();
+
+        document.getElementById('contact').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+        setTimeout(() => form.phone.focus({ preventScroll: true }), reduceMotion ? 0 : 600);
+      });
+
+      Object.values(quickFields).forEach(f => {
+        f.input.addEventListener(f.input.tagName === 'SELECT' ? 'change' : 'input', () => {
+          if (f.input.classList.contains('invalid')) setFieldError(f.input, f.error, f.check(f.input.value.trim()));
+        });
+      });
+
+      /* =========================================================
+         10. FREE GUIDE (lead magnet)
+         ========================================================= */
+      const guideForm = document.getElementById('guide-form');
+      const guideName = document.getElementById('g-name');
+      const guideEmail = document.getElementById('g-email');
+
+      guideForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const name = guideName.value.trim();
+        const email = guideEmail.value.trim();
+        const nameMsg = name.length >= 2 ? '' : 'Please enter your first name.';
+        const emailMsg = EMAIL_RE.test(email) ? '' : 'Please enter a valid email address.';
+        setFieldError(guideName, document.getElementById('g-name-error'), nameMsg);
+        setFieldError(guideEmail, document.getElementById('g-email-error'), emailMsg);
+        if (nameMsg) { guideName.focus(); return; }
+        if (emailMsg) { guideEmail.focus(); return; }
+
+        console.log('Guide request:', JSON.stringify({ name, email, requestedAt: new Date().toISOString() }));
+        const card = document.getElementById('guide-card');
+        const success = successPanel('Check your inbox, ' + name + '!', 'Your Rate-Rise Survival Guide is on its way to ' + email + '.');
+        card.replaceChildren(success);
+        success.focus();
+      });
+
+      /* =========================================================
+         11. NEWSLETTER SIGNUP
+         ========================================================= */
+      const newsletterForm = document.getElementById('newsletter-form');
+      const newsletterInput = document.getElementById('newsletter-email');
+      const newsletterMsg = document.getElementById('newsletter-msg');
+
+      newsletterForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const value = newsletterInput.value.trim();
+        newsletterMsg.className = 'newsletter-msg';
+
+        if (!value || !EMAIL_RE.test(value)) {
+          newsletterInput.classList.add('invalid');
+          newsletterInput.setAttribute('aria-invalid', 'true');
+          newsletterMsg.classList.add('error');
+          newsletterMsg.textContent = value ? 'Please enter a valid email address.' : 'Please enter your email address.';
+          newsletterInput.focus();
+          return;
+        }
+
+        newsletterInput.classList.remove('invalid');
+        newsletterInput.removeAttribute('aria-invalid');
+        newsletterMsg.classList.add('success');
+        newsletterMsg.textContent = 'Thanks for subscribing! Check your inbox to confirm.';
+        console.log('Newsletter signup:', JSON.stringify({ email: value }));
+        newsletterForm.reset();
+      });
+
+      newsletterInput.addEventListener('input', () => {
+        if (newsletterInput.classList.contains('invalid') && EMAIL_RE.test(newsletterInput.value.trim())) {
+          newsletterInput.classList.remove('invalid');
+          newsletterInput.removeAttribute('aria-invalid');
+          newsletterMsg.textContent = '';
+        }
+      });
+
+      /* =========================================================
+         12. FOOTER YEAR
+         ========================================================= */
+      document.getElementById('year').textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>

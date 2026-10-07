@@ -6,6 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 One-page marketing site for "Horizon Wealth Planning". Everything lives in a single `index.html`: CSS in one `<style>` tag, JS in one `<script>` tag. This is a hard constraint from the brief: no frameworks, build tools, package manager, or external JS/CSS files. The only external resources are Google Fonts (Playfair Display for headings, Inter for body), one Unsplash hero image, and `i.pravatar.cc` avatars.
 
+## Versions
+
+- `index.html` is the original site (v1). Leave it unchanged unless asked.
+- `v2/index.html` is the redesign, built on the same single-file rules. It adds a quick-start hero form, a live market ticker, market-trend charts, a retirement calculator, a free-guide lead magnet, an FAQ and a mobile action bar. Its footer links back to `../index.html`. Inline nav starts at 1024px (not 768px) because the menu has more links.
+- **v2 market data:** FX rates come live from `api.frankfurter.dev` (ECB) and crypto from `api.coingecko.com`. Both are keyless. If a request fails, the `FALLBACK` object in the JS is used. The snapshot cards (RBA rate, CPI, ASX 200, S&P 500), the "as of" date, the announcement bar and the insight copy are hand-written. Update them together when the figures change.
+- **v2 lead capture:** any link with `data-interest="<option value>"` preselects that service in the enquiry form. The hero quick form prefills name, email and interest, then scrolls to `#contact`. Submitted data includes `leadSource`.
+- The Pages workflow copies both `index.html` and `v2/`.
+
 ## Running
 
 There is no build, lint, or test tooling. Open the file directly:
