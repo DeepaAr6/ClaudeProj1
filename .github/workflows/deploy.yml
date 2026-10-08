@@ -31,6 +31,7 @@ jobs:
           mkdir _site
           cp index.html _site/
           cp -r v2 _site/
+          cp -r DanceWebsite _site/
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
