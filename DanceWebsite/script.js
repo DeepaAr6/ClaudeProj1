@@ -39,6 +39,13 @@ function storageSet(store, key, value) {
   try { store.setItem(key, value); } catch { /* storage unavailable */ }
 }
 
+// Visiting the page with ?popup in the URL resets the "already seen/registered" flags
+// so the popup shows again after the usual 10 seconds (handy for previewing it).
+if (new URLSearchParams(location.search).has("popup")) {
+  try { localStorage.removeItem("workshopRegistered"); } catch { /* storage unavailable */ }
+  try { sessionStorage.removeItem("workshopPopupShown"); } catch { /* storage unavailable */ }
+}
+
 if (!storageGet(localStorage, "workshopRegistered") && !storageGet(sessionStorage, "workshopPopupShown")) {
   setTimeout(() => {
     popup.showModal();
